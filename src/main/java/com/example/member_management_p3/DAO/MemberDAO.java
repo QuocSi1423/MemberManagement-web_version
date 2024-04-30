@@ -10,21 +10,24 @@ import org.springframework.stereotype.Repository;
 import com.example.member_management_p3.Repository.MemberRepository;
 import com.example.member_management_p3.Model.Member;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 
 @Repository
 public class MemberDAO {
     
-    MemberRepository memberRepository = (MemberRepository)new Object();
+    @Autowired
+    MemberRepository memberRepository;
 
-    @PersistenceContext
+    @Autowired
     private EntityManager entityManager;
 
 
     public boolean addMember(Member member) {
         try {
+            if (memberRepository.existsById(member.getMaTV()))
+                return false;
             memberRepository.save(member);
             return true;
         } catch (Exception e) {
@@ -77,11 +80,17 @@ public class MemberDAO {
                 return false;
             }
         } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            System.out.println(e.getMessage());
             return false;
         }
     }
 
     public List<Member> getAllMembers() {
+        List<Member> mems = memberRepository.findAll();
+        for (Member mem:mems) {
+            System.out.println(mem.toJson());
+        }
         return memberRepository.findAll();
     }
 
@@ -92,26 +101,49 @@ public class MemberDAO {
         return member.get();
     }
 
+    public List<Member> getMembersByName(String name) {
+        List<Member> mems = memberRepository.findByName(name);
+        if (mems.isEmpty())
+            return null;
+        return mems;
+    }
+
     public boolean deleteMember(Long id) {
         try {
-            memberRepository.deleteById(id);
-            return true;
+            if (memberRepository.existsById(id)) {
+                memberRepository.deleteById(id);
+                return true;
+            } else {
+                return false;
+            }
         } catch (Exception e) {
             return false;
         }
-    } 
+    }
 
     @Transactional
     public boolean deleteMembersByConditions(String khoa, String nganh, String maTVSubstring) {
         try {
-            String query = "DELETE FROM Member m WHERE m.khoa = :khoa OR m.nganh = :nganh OR SUBSTRING(m.maTV, 3, 2) = :maTVSubstring";
-            entityManager.createQuery(query)
-                .setParameter("khoa", khoa)
-                .setParameter("nganh", nganh)
-                .setParameter("maTVSubstring", maTVSubstring)
-                .executeUpdate();
+            String query = "DELETE FROM thanhvien WHERE";
+
+            if (khoa != null && !khoa.isEmpty())
+                query += " khoa = '" + khoa + "' and";  
+            if (nganh != null && !nganh.isEmpty())
+                query += " nganh = '" + nganh + "' and";
+            if (maTVSubstring != null && !maTVSubstring.isEmpty())
+                query += " SUBSTRING(maTV, 3, 2) = '" + maTVSubstring + "' and";
+
+            // Remove trailing spaces and check if the query ends with "and"
+            query = query.trim();
+            if (query.endsWith("and")) {
+                // Remove the last "and"
+                query = query.substring(0, query.length() - 3);
+            }
+
+            entityManager.createNativeQuery(query).executeUpdate();
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }

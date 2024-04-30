@@ -21,123 +21,135 @@ public class MemberService {
         this.memberDao = memberDao;
     }
 
-    public ResponseStructure addMember(Member member) {
-        ResponseStructure response = new ResponseStructure();
+    public ResponseStructure<Member> addMember(Member member) {
+        ResponseStructure<Member> response = new ResponseStructure<Member>();
         if (memberDao.addMember(member)) {
-            response.setMessage("success");
             response.setStatusCode(HttpStatus.CREATED.value());
-            response.setData(new JSONObject().put("", ""));
+            response.setMessage("add member successfully");
+            response.setData(null);
         } else {
-            response.setMessage("fail");
             response.setStatusCode(HttpStatus.CREATED.value());
-            response.setData(new JSONObject().put("", ""));
+            response.setMessage("fail to add member");
+            response.setData(null);
         }
         return response;
     }
 
-    public ResponseStructure addMultipleMembers(List<Member> members) {
-        ResponseStructure response = new ResponseStructure();
+    public ResponseStructure<Member> addMultipleMembers(List<Member> members) {
+        ResponseStructure<Member> response = new ResponseStructure<Member>();
         String result = memberDao.addMultipleMembers(members);
         if (result.equals("")) {
-            response.setMessage("success");
             response.setStatusCode(HttpStatus.CREATED.value());
-            response.setData(new JSONObject().put("", ""));
+            response.setMessage("add members successfully");
+            response.setData(null);
         } else {
-            response.setMessage("fail");
+            response.setMessage("fail to add members with id: " + result);
             response.setStatusCode(HttpStatus.CREATED.value());
-            // response.setData(members.get(0).toJson());
-            response.setData(new JSONObject().put("error_member", result));
+            response.setData(null);
 
         }
         return response;
     }
 
-    public ResponseStructure updateMember(Member member) {
-        ResponseStructure response = new ResponseStructure();
+    public ResponseStructure<Member> updateMember(Member member) {
+        ResponseStructure<Member> response = new ResponseStructure<Member>();
         if (memberDao.updateMember(member)) {
-            response.setMessage("success");
             response.setStatusCode(HttpStatus.CREATED.value());
-            response.setData(new JSONObject().put("", ""));
+            response.setMessage("update member successfully");
+            response.setData(null);
         } else {
-            response.setMessage("fail");
             response.setStatusCode(HttpStatus.CREATED.value());
-            response.setData(new JSONObject().put("", ""));
+            response.setMessage("fail to member");
+            response.setData(null);
         }
         return response;
     }
 
-    public ResponseStructure updateMaTV(Long oldMaTV, Long newMaTV) {
-        ResponseStructure response = new ResponseStructure();
+    public ResponseStructure<Member> updateMaTV(Long oldMaTV, Long newMaTV) {
+        ResponseStructure<Member> response = new ResponseStructure<Member>();
         if (memberDao.updateMaTV(oldMaTV, newMaTV)) {
-            response.setMessage("success");
             response.setStatusCode(HttpStatus.CREATED.value());
-            response.setData(new JSONObject().put("", ""));
+            response.setMessage("update member's matv successfully");
+            response.setData(null);
         } else {
-            response.setMessage("fail");
             response.setStatusCode(HttpStatus.CREATED.value());
-            response.setData(new JSONObject().put("", ""));
+            response.setMessage("fail to update member's matv");
+            response.setData(null);
         }
         return response;
     }
 
-    public ResponseStructure getAllMembers() {
-        ResponseStructure response = new ResponseStructure();
+    public ResponseStructure<List<Member>> getAllMembers() {
+        ResponseStructure<List<Member>> response = new ResponseStructure<List<Member>>();
         List<Member> members = memberDao.getAllMembers();
         if (members.size() > 0) {
-            response.setMessage("success");
+            response.setMessage("get list of members successfully");
             response.setStatusCode(HttpStatus.CREATED.value());
-            JSONObject data = new JSONObject();
-            for (Member member : members) {
-                data.put(String.valueOf(member.getMaTV()), member.toJson());
-            }
-            response.setData(data);
+            response.setData(members);
         } else {
             response.setMessage("no member found");
             response.setStatusCode(HttpStatus.CREATED.value());
-            response.setData(new JSONObject().put("", ""));
+            response.setData(null);
         }
         return response;
     }
 
-    public ResponseStructure getMemberById(long memberId) {
-        ResponseStructure response = new ResponseStructure();
+    public ResponseStructure<Member> getMemberById(long memberId) {
+        ResponseStructure<Member> response = new ResponseStructure<Member>();
         Member member = memberDao.getMemberById(memberId);
+        // return member;
         if (member != null) {
-            response.setMessage("success");
+            // return member;
             response.setStatusCode(HttpStatus.CREATED.value());
-            response.setData(member.toJson());
+            response.setMessage("Found");
+            response.setData(member);
+            return response;
+        } 
+        response.setStatusCode(HttpStatus.CREATED.value());
+        response.setMessage("not found");
+        response.setData(member);
+        return response;
+    }
+
+    public ResponseStructure<List<Member>> getMembersByName(String hoTen) {
+        ResponseStructure<List<Member>> response = new ResponseStructure<List<Member>>();
+        List<Member> members = memberDao.getMembersByName(hoTen);
+        if (members.size() > 0) {
+            response.setMessage("get list of members successfully");
+            response.setStatusCode(HttpStatus.CREATED.value());
+            response.setData(members);
         } else {
-            response.setMessage("member not found");
+            response.setMessage("no member found");
             response.setStatusCode(HttpStatus.CREATED.value());
-            response.setData(new JSONObject().put("", ""));
+            response.setData(null);
         }
         return response;
     }
 
-    public ResponseStructure deleteMember(long memberId) {
-        ResponseStructure response = new ResponseStructure();
+    public ResponseStructure<Member> deleteMember(long memberId) {
+        ResponseStructure<Member> response = new ResponseStructure<Member>();
         if (memberDao.deleteMember(memberId)) {
-            response.setMessage("success");
             response.setStatusCode(HttpStatus.CREATED.value());
-            response.setData(new JSONObject().put("", ""));
+            response.setMessage("delete member successfully");
+            response.setData(null);
         } else {
-            response.setMessage("fail");
             response.setStatusCode(HttpStatus.CREATED.value());
-            response.setData(new JSONObject().put("", ""));
+            response.setMessage("fail to delete member");
+            response.setData(null);
         }
         return response;
     }
 
-    public ResponseStructure deleteMembersByConditions(String khoa, String nganh, String maTVSubstring) {
-        ResponseStructure response = new ResponseStructure();
+    public ResponseStructure<Member> deleteMembersByConditions(String khoa, String nganh, String maTVSubstring) {
+        ResponseStructure<Member> response = new ResponseStructure<Member>();
         if (memberDao.deleteMembersByConditions(khoa, nganh, maTVSubstring)) {
-            response.setMessage("success");
             response.setStatusCode(HttpStatus.CREATED.value());
-            response.setData(new JSONObject().put("", ""));
+            response.setMessage("delete members successfully");
+            response.setData(null);
         } else {
-            response.setMessage("fail");
             response.setStatusCode(HttpStatus.CREATED.value());
-            response.setData(new JSONObject().put("", ""));
+            response.setMessage("fail to delete members");
+            response.setData(null);
         }
         return response;
     }

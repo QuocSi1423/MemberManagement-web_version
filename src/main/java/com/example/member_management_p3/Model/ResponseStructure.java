@@ -1,10 +1,10 @@
 package com.example.member_management_p3.Model;
 import org.json.JSONObject;
 
-public class ResponseStructure{
+public class ResponseStructure <T>{
     private int statusCode;
 	private String message;
-	private JSONObject data;
+	private T data;
 	
 	public int getStatusCode() {
 		return statusCode;
@@ -18,10 +18,10 @@ public class ResponseStructure{
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public JSONObject getData() {
+	public T getData() {
 		return data;
 	}
-	public void setData(JSONObject data) {
+	public void setData(T data) {
 		this.data = data;
 	}
 }
