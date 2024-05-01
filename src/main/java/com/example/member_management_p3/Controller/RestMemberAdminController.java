@@ -23,7 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @RestController
-public class MemberAdminController {
+public class RestMemberAdminController {
 
     @Autowired
     MemberService service;
