@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.member_management_p3.DAO.MemberDAO;
 import com.example.member_management_p3.Model.Member;
@@ -38,6 +39,22 @@ public class MemberService {
     public ResponseStructure<Member> addMultipleMembers(List<Member> members) {
         ResponseStructure<Member> response = new ResponseStructure<Member>();
         String result = memberDao.addMultipleMembers(members);
+        if (result.equals("")) {
+            response.setStatusCode(HttpStatus.CREATED.value());
+            response.setMessage("add members successfully");
+            response.setData(null);
+        } else {
+            response.setMessage("fail to add members with id: " + result);
+            response.setStatusCode(HttpStatus.CREATED.value());
+            response.setData(null);
+
+        }
+        return response;
+    }
+
+    public ResponseStructure<Member> addMembersFromFile(MultipartFile file) {
+        ResponseStructure<Member> response = new ResponseStructure<Member>();
+        String result = memberDao.addMembersFromFile(file);
         if (result.equals("")) {
             response.setStatusCode(HttpStatus.CREATED.value());
             response.setMessage("add members successfully");

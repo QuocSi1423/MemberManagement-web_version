@@ -1,11 +1,16 @@
 package com.example.member_management_p3.DAO;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.member_management_p3.Repository.MemberRepository;
 import com.example.member_management_p3.Model.Member;
@@ -13,6 +18,8 @@ import com.example.member_management_p3.Model.Member;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+
+import java.io.Reader;
 
 @Repository
 public class MemberDAO {
@@ -54,6 +61,31 @@ public class MemberDAO {
         }
         return result;
     }
+
+    public String addMembersFromFile(MultipartFile file) {
+        try {
+            Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
+            Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
+            
+            List<Member> members = new ArrayList<>();
+            for (CSVRecord record : records) {
+                Member member = new Member();
+                member.setMaTV(Long.parseLong(record.get("MaTV")));
+                member.setHoTen(record.get("HoTen"));
+                member.setKhoa(record.get("Khoa"));
+                member.setNganh(record.get("Nganh"));
+                member.setSdt(record.get("SDT"));
+                member.setPassword(record.get("PassWord"));
+                member.setEmail(record.get("Email"));
+                members.add(member);
+            }
+            
+            // Add the members to the database
+            return addMultipleMembers(members);
+        } catch (Exception e) {
+            return "Failed to add members: " + e.getMessage();
+        }
+    } 
 
     public boolean updateMember(Member member) {
         try {
