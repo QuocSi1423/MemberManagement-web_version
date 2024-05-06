@@ -4,14 +4,17 @@ import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.AllArgsConstructor;
 
@@ -19,6 +22,7 @@ import lombok.AllArgsConstructor;
 @Table(name = "xuly")
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class Violation {
 
@@ -30,17 +34,20 @@ public class Violation {
     @Column(name = "MaTV")
     private Integer memberId;
 
-    @Column(name = "HinhThucXL")
-    private String hadlingType;
+    @Column(name = "HinhthucXL")
+    private String handlingType;
 
-    @Column(name = "SoTien")
+    @Column(name = "Sotien")
     private Integer fine;
 
-    @Column(name = "NgayXL")
+    @Column(name = "ngayxl")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date handlingDate;
+    private Date date;
 
-    @Column(name = "TrangThaiXL")
+    @Column(name = "TrangthaiXL")
     private Integer status;
 
+    @ManyToOne(fetch = FetchType.EAGER) 
+    @JoinColumn(name = "MaTV", referencedColumnName = "member_id", insertable = false, updatable = false)
+    private SimpleMember member;
 }

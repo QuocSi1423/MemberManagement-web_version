@@ -1,6 +1,6 @@
 package com.example.member_management_p3.service;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,16 +13,20 @@ import com.example.member_management_p3.repository.ViolationRepository;
 
 @Service
 public class ViolationService {
+
+    private final ViolationRepository violationRepository;
+
     @Autowired
-    private ViolationRepository dbSet;
+    public ViolationService(ViolationRepository violationRepository) {
+        this.violationRepository = violationRepository;
+    }
 
     public int insertViolation(Violation violation) {
         try {
-            if (!dbSet.existsById(violation.getViolationId())) {
-                dbSet.save(violation);
+            if (!violationRepository.existsById(violation.getViolationId())) {
+                violationRepository.save(violation);
                 return Global.SUCCESSFUL;
-            } 
-            else {
+            } else {
                 return Global.EXISTED;
             }
         } catch (Exception e) {
@@ -32,11 +36,10 @@ public class ViolationService {
 
     public int deleteViolation(Integer id) {
         try {
-            if (dbSet.existsById(id)) {
-                dbSet.deleteById(id);
+            if (violationRepository.existsById(id)) {
+                violationRepository.deleteById(id);
                 return Global.SUCCESSFUL;
-            } 
-            else {
+            } else {
                 return Global.NOT_FOUND;
             }
         } catch (Exception e) {
@@ -46,35 +49,34 @@ public class ViolationService {
 
     public int changeStatus(Violation violation) {
         try {
-            Optional<Violation> result = dbSet.findById(violation.getViolationId());
+            Optional<Violation> result = violationRepository.findById(violation.getViolationId());
             if (result.isPresent()) {
                 Violation current = result.get();
                 current.setStatus(violation.getStatus());
-                dbSet.save(current);
+                violationRepository.save(current);
                 return Global.SUCCESSFUL;
-            } 
-            else {
+            } else {
                 return Global.NOT_FOUND;
             }
         } catch (Exception e) {
             return e.hashCode();
         }
     }
-    
+
     public Violation getViolation(Integer id) {
         try {
-            Optional<Violation> result = dbSet.findById(id);
-            if (result.isPresent()) { return result.get(); } 
-        } catch (Exception e) {}
-
-        return null;
+            Optional<Violation> result = violationRepository.findById(id);
+            return result.orElse(null);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public List<Violation> getViolationListByFilter(Integer status, Date startDate, Date endDate) {
         try {
-            return dbSet.getViolationListByFilter(status, startDate, endDate);
-        } catch (Exception e) {}
-
-        return null;
+            return violationRepository.getViolationListByFilter(status, startDate, endDate);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

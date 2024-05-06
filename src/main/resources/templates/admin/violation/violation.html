@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Violation</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Violation Page</h1>
+    
+    <form action="#" method="get">
+        <input type="radio" name="filter" value="all" th:checked="${all}">
+        <label>Tất cả</label>
+        
+        <input type="radio" name="filter" value="processed" th:checked="${processed}">
+        <label>Đã xử lý</label>
+        
+        <input type="radio" name="filter" value="unprocessed" th:checked="${unprocessed}">
+        <label>Chưa xử lý</label>
+
+        <br>
+        <button type="submit">Apply Filters</button>
+    </form>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Mã xử lý</th>
+                <th>Ngày</th>
+                <th>Mã thành viên</th>
+                <th>Tên thành viên</th>
+                <th>Hình thức xử lý</th>
+                <th>Số tiền phạt</th>
+                <th>Trạng thái</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Hiển thị dữ liệu vi phạm -->
+            <tr th:each="violation : ${violations}">
+                <td th:text="${violation.violationId}"></td>
+                <td th:text="${violation.date}"></td>
+                <td th:text="${violation.memberId}"></td>
+                <td th:text="${violation.member.name}"></td>
+                <td th:text="${violation.handlingType}"></td>
+                <td th:text="${violation.fine}"></td>
+                <td th:text="${violation.status}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
