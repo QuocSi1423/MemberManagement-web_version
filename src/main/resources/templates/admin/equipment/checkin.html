@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Checkin</title>
+    <script src="https://jquery.com/"></script>
+    <script>
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
+           .frame{
+            border-bottom: 2px solid #ccc;
+             display: flex;
+             overflow-x: auto;
+             width: 755px;
+     
+        }
+                a {
+                text-decoration: none; /* Loại bỏ dấu gạch dưới */
+                color: inherit; /* Kế thừa màu chữ từ phần tử cha */
+              }
+        
+        .panel {
+            background-color: #ffffff;
+            padding: 30px;
+            /*fix*/
+            max-width: 695px;
+            overflow-y: auto;
+            
+            height: 502px;
+            margin: 0 auto;
+            border: 2px solid #dddddd;
+            border-radius: 20px;
+            margin-top: 100px;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 18px;
+            color: #000000;
+            margin-top: 10%;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #F1F1F1;
+            color: black;
+        }
+
+        .th, td {
+            border: 1px solid #dddddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .th {
+            background-color: #0066FF;
+            color: #ffffff;
+        }
+
+        .input-label {
+            font-size: 14px;
+            color: #000000;
+        }
+
+        .date-input {
+            margin-right: 10px;
+            padding: 5px;
+        }
+
+        .button-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+        }
+
+        .button {
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            background-color: white;
+            color: black;
+            border-right: 2px solid #ccc;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+<div class="panel">
+    <div class="button-container">
+         <div class="frame">
+            <button class="button"><a href="/panelLoanEquipment">Mượn trả</a></button>
+            <button class="button"><a href="/">Vào ra</a></button>
+        </div>
+    </div>
+    <h1>Ghi nhận vào</h1>
+    <label class="input-label">Ngày:</label>
+    <label for="date-input"></label><input type="date" class="date-input" id="date-input">
+
+    <table id="table">
+        <thead>
+        <tr>
+            <th class="th">Mã thông tin</th>
+            <th class="th">Mã nhân viên</th>
+            <th class="th">Tên nhân viên</th>
+            <th class="th">Thời gian vào</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="usage : ${usages}" th:if="${usage.entryTime != null}">
+            <td th:text="${usage.usageId}"></td>
+            <td th:text="${usage.member.maTV}"></td>
+            <td th:text="${usage.member.hoTen}"></td>
+            <td th:text="${usage.entryTime}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const dateInput = document.getElementById('date-input');
+        const tableRows = document.querySelectorAll('#table tbody tr');
+
+        dateInput.addEventListener('change', function() {
+            const selectedDate = new Date(this.value);
+
+            tableRows.forEach(function(row) {
+                const entryTimeText = row.querySelector('td:nth-child(4)').textContent;
+                const entryTime = new Date(entryTimeText);
+                if (entryTime.getDate() === selectedDate.getDate() &&
+                    entryTime.getMonth() === selectedDate.getMonth() &&
+                    entryTime.getFullYear() === selectedDate.getFullYear()) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

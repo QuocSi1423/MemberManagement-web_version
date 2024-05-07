@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+    <title>Thêm dữ liệu từ Excel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 737px; /* Adjusted width */
+            height: 630px; /* Adjusted height */
+            margin: 100px auto; /* Updated margin */
+            padding: 100px; /* Added padding */
+                 /*fixx*/
+            overflow-y: auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #000000;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+
+            background-color: #F1F1F1;
+            color: black;
+        }
+
+        .th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        .th {
+            background-color: #0066FF;
+            color: white;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        #btn-cancel {
+            background-color: #C9C9C9;
+            color: black;
+            margin-top: 10px;
+            width: 131px;
+            height: 46px;
+            margin-left: 60%;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        #btn-add {
+            background-color: #0066FF;
+            color: white;
+            margin-top: 10px;
+            width: 131px;
+            height: 46px;
+              font-weight: bold;
+              font-size: 20px;
+              
+
+        }
+       
+         .card-body {
+          padding: 10px;
+        }
+      
+
+      
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Thêm dữ liệu từ file excel</h1>
+    <div class="card">
+        <div class="card-header"><b>Chọn file excel</b></div>
+        <div class="card-body">
+
+            <input class="file" type="file" id="excel_file"/>
+
+        </div>
+    </div>
+    <div id="excel_data" class="mt-5"></div>
+    <table id="excel-table">
+        <thead>
+        <tr>
+            <th class="th">Mã TT</th>
+            <th class="th">Mã TV</th>
+            <th class="th">Mã TB</th>
+            <th class="th">Thời gian vào</th>
+            <th class="th">Thời gian mượn</th>
+            <th class="th">Thời gian trả</th>
+        </tr>
+        </thead>
+        <tbody id=table-body>
+
+        </tbody>
+    </table>
+    <div>
+        <button id="btn-cancel" onclick="cancel()">Hủy</button>
+        <button id="btn-add" onclick="add()">Thêm</button>
+    </div>
+</div>
+<script>
+
+    function cancel() {
+        window.close();
+    }
+
+    function add() {
+        const table = document.getElementById('excel-table');
+        const rows = table.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            const usage = {
+                usageId: parseInt(cells[0].textContent, 10),
+                memberId: parseInt(cells[1].textContent, 10),
+                equipmentId: parseInt(cells[2].textContent, 10),
+                entryTime: convertExcelDateToTimestamp(cells[3].textContent),
+                borrowingTime: convertExcelDateToTimestamp(cells[4].textContent),
+                returnTime: convertExcelDateToTimestamp(cells[5].textContent)
+            };
+            try {
+                fetch(`/api/usages/usage/add`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(usage)
+                }).then(response => {
+                })
+                    .catch(error => console.error('Lỗi khi gửi dữ liệu:', error));
+            } catch (e) {
+
+            }
+        });
+        alert('Dữ liệu đã được thêm thành công!');
+        window.location.reload();
+    }
+
+    function convertExcelDateToTimestamp(excelDate) {
+        if (excelDate != null && excelDate.includes(" ")) {
+            const formatPart1 = excelDate.split('/');
+            const formatPart2 = formatPart1[2].split(' ');
+            const formatPart3 = formatPart2[1].split(':');
+            const formatParts = [
+                ...formatPart1.slice(0, 2),
+                formatPart2[0],
+                ...formatPart3
+            ];
+            console.log(formatParts)
+            const date = new Date();
+            date.setFullYear(parseInt(formatParts[0]));
+            date.setMonth(parseInt(formatParts[1]) - 1);
+            date.setDate(parseInt(formatParts[2]));
+            date.setHours(parseInt(formatParts[3]));
+            date.setMinutes(parseInt(formatParts[4]));
+            date.setSeconds(parseInt(formatParts[5]));
+
+            return date.toISOString();
+        }
+    }
+
+    document.getElementById('excel_file').addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, {type: 'array'});
+            const sheet_name_list = workbook.SheetNames;
+            let html = '<tbody>';
+            sheet_name_list.forEach(function (sheetName) {
+                const worksheet = workbook.Sheets[sheetName];
+                const range = XLSX.utils.decode_range(worksheet['!ref']);
+                for (let i = range.s.r + 1; i <= range.e.r; i++) {
+                    html += '<tr>';
+                    for (let j = range.s.c; j <= range.e.c; j++) {
+                        const cell_address = {c: j, r: i};
+                        const cell_ref = XLSX.utils.encode_cell(cell_address);
+                        const cell = worksheet[cell_ref];
+                        if (cell) {
+                            html += '<td>' + formatCell(cell, j) + '</td>';
+                        } else {
+                            html += '<td></td>';
+                        }
+                    }
+                    html += '</tr>';
+                }
+            });
+            html += '</tbody>';
+            document.getElementById('table-body').innerHTML = html;
+        };
+        reader.readAsArrayBuffer(file);
+    });
+
+    function formatCell(cell, j) {
+        if (cell.t === 'n' && j > 2) {
+            console.log("Test", XLSX.SSF.format('yyyy/mm/dd hh:mm:ss', cell.v));
+            return XLSX.SSF.format('yyyy/mm/dd hh:mm:ss', cell.v);
+        } else {
+            return cell.v;
+        }
+    }
+</script>
+</body>
+</html>
