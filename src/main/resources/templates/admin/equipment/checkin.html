@@ -14,26 +14,30 @@
             margin: 0;
             padding: 0;
         }
-
-           .frame{
-            border-bottom: 2px solid #ccc;
-             display: flex;
-             overflow-x: auto;
-             width: 755px;
-     
+        .all{
+            overflow-y: auto;
+            height: 300px;
+            scrollbar-width: thin; /* Kích thước của thanh trượt */
+            scrollbar-color: #0066ff #ffffff;
+            margin-top: 10px
         }
-                a {
-                text-decoration: none; /* Loại bỏ dấu gạch dưới */
-                color: inherit; /* Kế thừa màu chữ từ phần tử cha */
-              }
-        
+        .frame{
+            border-bottom: 2px solid #ccc;
+            display: flex;
+
+            width: 755px;
+
+        }
+        a {
+            text-decoration: none; /* Loại bỏ dấu gạch dưới */
+            color: inherit; /* Kế thừa màu chữ từ phần tử cha */
+        }
+
         .panel {
             background-color: #ffffff;
             padding: 30px;
             /*fix*/
             max-width: 695px;
-            overflow-y: auto;
-            
             height: 502px;
             margin: 0 auto;
             border: 2px solid #dddddd;
@@ -109,7 +113,7 @@
 <body>
 <div class="panel">
     <div class="button-container">
-         <div class="frame">
+        <div class="frame">
             <button class="button"><a href="/panelLoanEquipment">Mượn trả</a></button>
             <button class="button"><a href="/">Vào ra</a></button>
         </div>
@@ -117,25 +121,26 @@
     <h1>Ghi nhận vào</h1>
     <label class="input-label">Ngày:</label>
     <label for="date-input"></label><input type="date" class="date-input" id="date-input">
-
-    <table id="table">
-        <thead>
-        <tr>
-            <th class="th">Mã thông tin</th>
-            <th class="th">Mã nhân viên</th>
-            <th class="th">Tên nhân viên</th>
-            <th class="th">Thời gian vào</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="usage : ${usages}" th:if="${usage.entryTime != null}">
-            <td th:text="${usage.usageId}"></td>
-            <td th:text="${usage.member.maTV}"></td>
-            <td th:text="${usage.member.hoTen}"></td>
-            <td th:text="${usage.entryTime}"></td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="all">
+        <table id="table">
+            <thead>
+            <tr>
+                <th class="th">Mã thông tin</th>
+                <th class="th">Mã nhân viên</th>
+                <th class="th">Tên nhân viên</th>
+                <th class="th">Thời gian vào</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="usage : ${usages}" th:if="${usage.entryTime != null}">
+                <td th:text="${usage.usageId}"></td>
+                <td th:text="${usage.member.maTV}"></td>
+                <td th:text="${usage.member.hoTen}"></td>
+                <td th:text="${usage.entryTime}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script>

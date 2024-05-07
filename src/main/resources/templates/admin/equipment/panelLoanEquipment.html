@@ -5,25 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thông tin</title>
     <style>
-      body {
+        body {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 130vh;
-            margin: 0;
+
+            margin-top:20px;
         }
-         .frame{
+        .all{
+            margin-top: 10px;
+            overflow-y: auto;
+            height: 300px;
+            scrollbar-width: thin; /* Kích thước của thanh trượt */
+            scrollbar-color: #0066ff #ffffff; /* Màu sắc của thanh trượt */
+        }
+        .frame{
             border-bottom: 2px solid #ccc;
-            
-             display: flex;
-             overflow-x: auto;
-             width: 758px;
+
+            display: flex;
+            /*overflow-x: auto;*/
+            width: 758px;
         }
 
         .panel-loan {
             position: relative; /* Khai báo vị trí tương đối */
             width: 762px;
-            overflow-y: auto;
+            /*overflow-y: auto;*/
             height: 550px;
             max-height:  550px;
             padding: 61px;
@@ -55,14 +62,14 @@
             margin-left: 110px;
             border-radius: 8px;
         }
-           .button2 {
+        .button2 {
             width: 156px;
             height: 40px;
             background-color: #0066FF;
             color: white;
             border: none;
             cursor: pointer;
-  
+
             margin-left: 10px;
             border-radius: 8px;
         }
@@ -82,13 +89,13 @@
         th {
             background-color: #F1F1F1;
             color: black;
-             font-size: 13px;
+            font-size: 10px;
         }
 
         .th {
             background-color: #0066FF;
             color: white;
-            font-size: 13px;
+            font-size: 10px;
         }
 
         .button-container {
@@ -97,11 +104,11 @@
             left: 0; /* Đặt vị trí từ cạnh trái cùng */
         }
         a {
-        text-decoration: none; /* Loại bỏ dấu gạch dưới */
-        color: inherit; /* Kế thừa màu chữ từ phần tử cha */
-          font-weight: bold;
-      }
-      .btn-danger {
+            text-decoration: none; /* Loại bỏ dấu gạch dưới */
+            color: inherit; /* Kế thừa màu chữ từ phần tử cha */
+            font-weight: bold;
+        }
+        .btn-danger {
             background-color: red;
             color: white;
             border: none;
@@ -109,7 +116,7 @@
             border-radius: 3px;
             cursor: pointer;
             width: 100%;
-          }
+        }
 
     </style>
 </head>
@@ -127,41 +134,43 @@
     <label for="chua"></label><input type="checkbox" id="chua" onclick="chuaClicked()">Chưa trả
     <button class="button1"><a href="/excelTable">Thêm từ excel</a></button>
     <button class="button2"><a href="/loanTable">+ Phiếu mượn</a></button>
-    <table id="tableUsage">
-        <thead>
-        <tr id="Title">
-            <th class="th">Mã</th>
-            <th class="th">Tên thành viên</th>
-            <th class="th">Tên thiết bị</th>
-            <th class="th">Ngày mượn</th>
-            <th class="th">Ngày trả</th>
-            <th class="th">Trả thiết bị</th>
-            <th class="th">Xóa phiếu mượn</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="usage : ${usages}" th:if="${usage.equipmentId != null}">
-            <td th:text="${usage.usageId}"></td>
-            <td th:text="${usage.member.hoTen}"></td>
-            <td th:text="${usage.equipment.tenTB}"></td>
-            <td th:text="${usage.borrowingTime}"></td>
-            <td th:text="${usage.returnTime}"></td>
-            <td>
-                <label>
-                    <input type="checkbox" th:checked="${usage.returnTime != null}"
-                           th:disabled="${usage.returnTime != null}">
-                </label>
-            </td>
-            <td>
-                <form id="deleteForm" th:action="@{/api/usages/usage/delete(id=${usage.usageId})}" method="post">
-                    <button type="button" class="btn btn-danger btn-sm"
-                            onclick="confirmDelete(this)">Xóa
-                    </button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="all">
+        <table id="tableUsage">
+            <thead>
+            <tr id="Title">
+                <th class="th">Mã</th>
+                <th class="th">Tên thành viên</th>
+                <th class="th">Tên thiết bị</th>
+                <th class="th">Ngày mượn</th>
+                <th class="th">Ngày trả</th>
+                <th class="th">Trả thiết bị</th>
+                <th class="th">Xóa phiếu mượn</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="usage : ${usages}" th:if="${usage.equipmentId != null}">
+                <td th:text="${usage.usageId}"></td>
+                <td th:text="${usage.member.hoTen}"></td>
+                <td th:text="${usage.equipment.tenTB}"></td>
+                <td th:text="${usage.borrowingTime}"></td>
+                <td th:text="${usage.returnTime}"></td>
+                <td>
+                    <label>
+                        <input type="checkbox" th:checked="${usage.returnTime != null}"
+                               th:disabled="${usage.returnTime != null}">
+                    </label>
+                </td>
+                <td>
+                    <form id="deleteForm" th:action="@{/api/usages/usage/delete(id=${usage.usageId})}" method="post">
+                        <button type="button" class="btn btn-danger btn-sm"
+                                onclick="confirmDelete(this)">Xóa
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script>
