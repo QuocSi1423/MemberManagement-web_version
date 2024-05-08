@@ -9,9 +9,8 @@
   <body>
     <div class="user-page">
       <div class="navigation">
-        <a th:href="@{/profile}" href="/profile">Tôi</a>
-        <a th:href="@{/reservation}" href="/reservation">Thiết bị và đặt chõ</a>
-        
+        <a th:href="@{/profile}">Tôi</a>
+        <a th:href="@{/reservation}">Thiết bị và đặt chõ</a>
       </div>
       <div id="user-container">
         <div th:replace="${content}"></div>
