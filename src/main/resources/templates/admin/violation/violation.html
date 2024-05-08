@@ -17,7 +17,7 @@
 </head>
 <body>
 <div class="violaion-toolbar">
-    <nav class="navbar bg-body-tertiary">
+    <div class="navbar  border-bottom border-secondary p-2">
         <div class="container-fluid d-flex justify-content-between">
             <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -29,61 +29,68 @@
             </div>
 
         </div>
-    </nav>
+    </div>
 </div>
 
+<div class="violation-body my-2">
+    <h1 class="m-2">Danh Sách Vi Phạm</h1>
+    <div class="d-flex justify-content-between">
+        <form action="#" method="get" >
 
-<h1>Danh Sách Vi Phạm</h1>
-<div class="d-flex justify-content-between align-items-center">
-    <form action="#" method="get" class="align-items-center">
-        <ul class="btn-group d-flex ">
-            <li class="list-group-item m-auto me-3">
-                <input class="form-check-input me-1" type="radio" name="filter" value="all" id="firstRadio"
-                       th:checked="${all}">
-                <label class="form-check-label" for="firstRadio">Tất cả</label>
-            </li>
-            <li class="list-group-item m-auto me-3">
-                <input class="form-check-input me-1" type="radio" name="filter" value="processed" id="secondRadio"
-                       th:checked="${processed}">
-                <label class="form-check-label" for="secondRadio">Đã xử lý</label>
-            </li>
-            <li class="list-group-item m-auto me-3">
-                <input class="form-check-input me-1" type="radio" name="filter" value="unprocessed" id="thirdRadio"
-                       th:checked="${unprocessed}">
-                <label class="form-check-label" for="thirdRadio">Chưa xử lý</label>
-            </li>
-            <button type="submit">Apply Filters</button>
-        </ul>
-    </form>
-    <button class="btn btn-secondary px-5">Xóa vi phạm</button>
+                <ul class="btn-group ">
+                    <li class="list-group-item m-auto me-3">
+                        <input class="form-check-input me-1" type="radio" name="filter" value="all" id="firstRadio"
+                               th:checked="${all}">
+                        <label class="form-check-label" for="firstRadio">Tất cả</label>
+                    </li>
+                    <li class="list-group-item m-auto me-3">
+                        <input class="form-check-input me-1" type="radio" name="filter" value="processed"
+                               id="secondRadio"
+                               th:checked="${processed}">
+                        <label class="form-check-label" for="secondRadio">Đã xử lý</label>
+                    </li>
+                    <li class="list-group-item m-auto me-3">
+                        <input class="form-check-input me-1" type="radio" name="filter" value="unprocessed"
+                               id="thirdRadio"
+                               th:checked="${unprocessed}">
+                        <label class="form-check-label" for="thirdRadio">Chưa xử lý</label>
+                    </li>
+                    <button type="submit">Apply Filters</button>
+                </ul>
+
+
+        </form>
+        <button class="btn btn-secondary px-5">Xóa vi phạm</button>
+    </div>
+
+
+    <table class="table table-hover table-bordered">
+        <thead class="table-primary">
+        <tr >
+            <th>Mã xử lý</th>
+            <th>Ngày</th>
+            <th>Mã thành viên</th>
+            <th>Tên thành viên</th>
+            <th>Hình thức xử lý</th>
+            <th>Số tiền phạt</th>
+            <th>Trạng thái</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Hiển thị dữ liệu vi phạm -->
+        <tr th:each="violation : ${violations}">
+            <td th:text="${violation.violationId}"></td>
+            <td th:text="${violation.date}"></td>
+            <td th:text="${violation.memberId}"></td>
+            <td th:text="${violation.member.name}"></td>
+            <td th:text="${violation.handlingType}"></td>
+            <td th:text="${violation.fine}"></td>
+            <td th:text="${violation.status}"></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
-
-<table>
-    <thead>
-    <tr>
-        <th>Mã xử lý</th>
-        <th>Ngày</th>
-        <th>Mã thành viên</th>
-        <th>Tên thành viên</th>
-        <th>Hình thức xử lý</th>
-        <th>Số tiền phạt</th>
-        <th>Trạng thái</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!-- Hiển thị dữ liệu vi phạm -->
-    <tr th:each="violation : ${violations}">
-        <td th:text="${violation.violationId}"></td>
-        <td th:text="${violation.date}"></td>
-        <td th:text="${violation.memberId}"></td>
-        <td th:text="${violation.member.name}"></td>
-        <td th:text="${violation.handlingType}"></td>
-        <td th:text="${violation.fine}"></td>
-        <td th:text="${violation.status}"></td>
-    </tr>
-    </tbody>
-</table>
 <script src="/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
