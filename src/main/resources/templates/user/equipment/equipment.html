@@ -1,0 +1,38 @@
+
+<div class="container">
+    <div class="search">
+        <i class="fa fa-search"></i>
+        <form action="#" th:action="@{/search}" method="get">
+            <input
+                    type="text"
+                    class="form-control"
+                    id="search-equipment"
+                    name="search-equipment"
+                    placeholder="Tìm Ki?m Thi?t B? (Tên thi?t b?)"
+                    required
+            />
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+
+    <table class="table" >
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Mã TB</th>
+            <th scope="col">Tên TB</th>
+            <th scope="col">Hành ??ng</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="equipmentItem, itemStat : ${equipmentList}">
+            <td th:text="${itemStat.count}"></td>
+            <td th:text="${equipmentItem.MaTB}"></td>
+            <td th:text="${equipmentItem.TenTB}"></td>
+            <td>
+                <button class="btn btn-primary" >??t Ch?</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

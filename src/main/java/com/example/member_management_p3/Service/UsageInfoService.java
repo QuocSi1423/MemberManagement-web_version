@@ -1,5 +1,6 @@
 package com.example.member_management_p3.Service;
 
+import com.example.member_management_p3.DAO.UsageInfoDAO;
 import com.example.member_management_p3.Model.Entity.UsageInfo;
 import com.example.member_management_p3.Responsitory.UsageInfoRespository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,14 @@ import java.util.List;
 @Service
 public class UsageInfoService {
     @Autowired
-    private UsageInfoRespository usageInfoRespository;
+    UsageInfoDAO usageInfoDAO;
 
-    public List<UsageInfo> getAllUsageInfo(){
-        return usageInfoRespository.findAll();
+    public UsageInfoService(UsageInfoDAO usageInfoDAO) {
+        this.usageInfoDAO = usageInfoDAO;
+    }
+
+    public String addUsageInfo(UsageInfo usageInfo) {
+        if (usageInfoDAO.addUsageInfo(usageInfo)) return "Successfully added usage info";
+        else return "Error adding usage info";
     }
 }

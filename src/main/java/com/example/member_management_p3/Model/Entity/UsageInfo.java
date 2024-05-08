@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 public class UsageInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long MaTT;
-    private long MaTV;
-    private long MaTB;
+    private int MaTT;
+    private int MaTV;
+    private int MaTB;
     private LocalDateTime tgvao;
     private LocalDateTime tgmuon;
     private LocalDateTime tgtra;
@@ -22,23 +22,23 @@ public class UsageInfo {
         return MaTT;
     }
 
-    public void setMaTT(long MaTT) {
+    public void setMaTT(int MaTT) {
         this.MaTT = MaTT;
     }
 
-    public long getMaTV() {
+    public int getMaTV() {
         return MaTV;
     }
 
-    public void setMaTV(long MaTV) {
+    public void setMaTV(int MaTV) {
         this.MaTV = MaTV;
     }
 
-    public long getMaTB() {
+    public int getMaTB() {
         return MaTB;
     }
 
-    public void setMaTB(long MaTB) {
+    public void setMaTB(int MaTB) {
         this.MaTB = MaTB;
     }
 

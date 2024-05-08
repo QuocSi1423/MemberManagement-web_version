@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long MaTV;
+    private int MaTV;
     private String Hoten;
     private String Khoa;
     private String Nganh;
@@ -15,11 +15,11 @@ public class Member {
     private String Email;
     private String Password;
 
-    public long getMaTV() {
+    public int getMaTV() {
         return MaTV;
     }
 
-    public void setMaTV(long MaTV) {
+    public void setMaTV(int MaTV) {
         this.MaTV = MaTV;
     }
 

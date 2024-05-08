@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class Equipment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long MaTB;
+    private int MaTB;
     private String TenTB;
     private String MotaTB;
 
@@ -15,7 +15,7 @@ public class Equipment {
         return MaTB;
     }
 
-    public void setMaTB(long MaTB) {
+    public void setMaTB(int MaTB) {
         this.MaTB = MaTB;
     }
 

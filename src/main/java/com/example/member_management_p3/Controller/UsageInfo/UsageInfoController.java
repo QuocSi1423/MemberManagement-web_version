@@ -12,11 +12,4 @@ import java.util.List;
 @Controller
 public class UsageInfoController {
     private UsageInfoService usageInfoService;
-
-    @GetMapping("/user/equipment")
-    public String getUsageInfoByMemberId(Model model){
-        List<UsageInfo> usageInfoList = usageInfoService.getAllUsageInfo();
-        model.addAttribute("usageInfoList", usageInfoList);
-        return "user/equipment";
-    }
 }
