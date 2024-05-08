@@ -1,5 +1,6 @@
 package com.example.member_management_p3.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 import jakarta.persistence.Column;

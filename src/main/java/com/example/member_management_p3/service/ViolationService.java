@@ -23,12 +23,8 @@ public class ViolationService {
 
     public int insertViolation(Violation violation) {
         try {
-            if (!violationRepository.existsById(violation.getViolationId())) {
-                violationRepository.save(violation);
-                return Global.SUCCESSFUL;
-            } else {
-                return Global.EXISTED;
-            }
+            violationRepository.save(violation);
+            return Global.SUCCESSFUL;
         } catch (Exception e) {
             return e.hashCode();
         }

@@ -2,18 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <head>
     <title>Violation</title>
+
+    <link href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">-->
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        td{
+            text-align: center;
         }
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
+        tr, th{
+            text-align: center;
+        }
+        .modal-body, label {
+            font-weight: bold;
+        }
+        .modal-header, h4{
+            font-weight: bold;
         }
     </style>
-    <link href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="violaion-toolbar">
@@ -24,73 +30,221 @@
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
             <div class="btn-group">
-                <button class="btn btn-primary px-5 py-2 rounded-2">Thêm từ file excel</button>
-                <button class="btn btn-danger px-5 y-2 ms-2 rounded-2">+ Vi phạm</button>
+                <button class="btn btn-primary px-5 py-2 rounded-2 fw-medium ">Thêm từ file excel</button>
+                <button id="openPopupAdd" class="btn btn-danger px-5 y-2 ms-2 rounded-2 fw-medium ">+ Vi phạm</button>
             </div>
 
         </div>
     </div>
 </div>
 
-<div class="violation-body my-2">
-    <h1 class="m-2">Danh Sách Vi Phạm</h1>
-    <div class="d-flex justify-content-between">
-        <form action="#" method="get" >
+<div class="violation-body">
+
+    <div class="d-flex justify-content-between my-2">
+        <div>
+            <h1 class="ms-5 my-2 fw-medium fs-3">Danh Sách Vi Phạm</h1>
+            <form action="#" method="get">
 
                 <ul class="btn-group ">
-                    <li class="list-group-item m-auto me-3">
-                        <input class="form-check-input me-1" type="radio" name="filter" value="all" id="firstRadio"
+                    <li class="list-group-item m-auto me-3 pb-0">
+                        <input class="form-check-input " type="radio" name="filter" value="all" id="firstRadio"
                                th:checked="${all}">
                         <label class="form-check-label" for="firstRadio">Tất cả</label>
                     </li>
-                    <li class="list-group-item m-auto me-3">
-                        <input class="form-check-input me-1" type="radio" name="filter" value="processed"
+                    <li class="list-group-item m-auto me-3 ">
+                        <input class="form-check-input  " type="radio" name="filter" value="processed"
                                id="secondRadio"
                                th:checked="${processed}">
                         <label class="form-check-label" for="secondRadio">Đã xử lý</label>
                     </li>
-                    <li class="list-group-item m-auto me-3">
-                        <input class="form-check-input me-1" type="radio" name="filter" value="unprocessed"
+                    <li class="list-group-item m-auto me-3 ">
+                        <input class="form-check-input " type="radio" name="filter" value="unprocessed"
                                id="thirdRadio"
                                th:checked="${unprocessed}">
                         <label class="form-check-label" for="thirdRadio">Chưa xử lý</label>
                     </li>
-                    <button type="submit">Apply Filters</button>
+                    <button class="btn btn-sm btn-primary" type="submit">Apply Filters</button>
                 </ul>
 
 
-        </form>
-        <button class="btn btn-secondary px-5">Xóa vi phạm</button>
+            </form>
+        </div>
+
+        <button class="btn btn-secondary px-5 h-50 fw-medium align-self-center me-4">Xóa vi phạm</button>
     </div>
 
+    <div class="table-responsive mx-4">
+        <table id="openPopupUpdate" class="table table-hover table-bordered  ">
+            <thead>
+            <tr>
+                <th class="bg-primary text-white">Mã xử lý</th>
+                <th class="bg-primary text-white">Ngày</th>
+                <th class="bg-primary text-white">Mã thành viên</th>
+                <th class="bg-primary text-white">Tên thành viên</th>
+                <th class="bg-primary text-white">Hình thức xử lý</th>
+                <th class="bg-primary text-white">Số tiền phạt</th>
+                <th class="bg-primary text-white">Trạng thái</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Hiển thị dữ liệu vi phạm -->
+            <tr th:each="violation : ${violations}">
+                <td th:text="${violation.violationId}"></td>
+                <td th:text="${violation.date}"></td>
+                <td th:text="${violation.memberId}"></td>
+                <td th:text="${violation.member.name}"></td>
+                <td th:text="${violation.handlingType}"></td>
+                <td th:text="${violation.fine}"></td>
+                <td th:text="${violation.status}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
-    <table class="table table-hover table-bordered">
-        <thead class="table-primary">
-        <tr >
-            <th>Mã xử lý</th>
-            <th>Ngày</th>
-            <th>Mã thành viên</th>
-            <th>Tên thành viên</th>
-            <th>Hình thức xử lý</th>
-            <th>Số tiền phạt</th>
-            <th>Trạng thái</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Hiển thị dữ liệu vi phạm -->
-        <tr th:each="violation : ${violations}">
-            <td th:text="${violation.violationId}"></td>
-            <td th:text="${violation.date}"></td>
-            <td th:text="${violation.memberId}"></td>
-            <td th:text="${violation.member.name}"></td>
-            <td th:text="${violation.handlingType}"></td>
-            <td th:text="${violation.fine}"></td>
-            <td th:text="${violation.status}"></td>
-        </tr>
-        </tbody>
-    </table>
 </div>
 
-<script src="/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<!--Dialog Thêm thông tin vi phạm -->
+<div id="popupAdd" class="modal fade " role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title fw-medium">Thêm vi phạm</h4>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form th:action="@{/admin/violations/new}" method="post">
+                <div class="modal-body">
+
+                    <div class="form-group mt-2">
+                        <label for="memberCodeAdd">Mã thành viên:</label>
+                        <input type="text" class="form-control" id="memberCodeAdd" name="memberId">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="fullNameAdd">Họ và tên:</label>
+                        <input type="text" class="form-control" id="fullNameAdd">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="processTypeAdd">Hình thức xử lý:</label>
+                        <input type="text" class="form-control" id="processTypeAdd" name="handlingType">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="amountAdd">Số tiền:</label>
+                        <input type="text" class="form-control" id="amountAdd" name="fine">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="processDateAdd">Ngày xử lý:</label>
+                        <input type="date" class="form-control" id="processDateAdd" name="date">
+                    </div>
+                    <div class="form-check mt-2">
+                        <input type="checkbox" class="form-check-input" id="processedAdd" name="status">
+                        <label class="form-check-label" for="processedAdd">Đã xử lý</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="clearFieldsButtonAdd">Làm sạch</button>
+                    <button type="submit" class="btn btn-primary">Thêm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--Dialog Sửa thông tin vi phạm -->
+<div id="popupUpdate" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title ">Sửa thông tin vi phạm</h4>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group mt-2">
+                    <label for="memberCode">Mã thành viên:</label>
+                    <input type="text" class="form-control" id="memberCode">
+                </div>
+                <div class="form-group mt-2">
+                    <label for="fullName">Họ và tên:</label>
+                    <input type="text" class="form-control" id="fullName">
+                </div>
+                <div class="form-group mt-2">
+                    <label for="processType">Hình thức xử lý:</label>
+                    <input type="text" class="form-control" id="processType">
+                </div>
+                <div class="form-group mt-2">
+                    <label for="amount">Số tiền:</label>
+                    <input type="text" class="form-control" id="amount">
+                </div>
+                <div class="form-group mt-2">
+                    <label for="processDate">Ngày xử lý:</label>
+                    <input type="date" class="form-control" id="processDate">
+                </div>
+                <div class="form-check mt-2">
+                    <input type="checkbox" class="form-check-input" id="processed">
+                    <label class="form-check-label" for="processed">Đã xử lý</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="clearFieldsButton">Làm sạch</button>
+                <button type="button" class="btn btn-primary">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script th:inline="javascript">
+    $(document).ready(function(){
+    // Handle event click để show popup add violation
+        $('#openPopupAdd').click(function(){
+        console.log($(this))
+            $('#popupAdd').modal('show');
+        });
+
+        $('#clearFieldsButtonAdd').click(function(){
+            $('#memberCodeAdd').val('');
+            $('#fullNameAdd').val('');
+            $('#processTypeAdd').val('');
+            $('#amountAdd').val('');
+            $('#processDateAdd').val('');
+            $('#processedAdd').prop('checked', false);
+        });
+
+        $('#clearFieldsButton').click(function(){
+            $('#memberCode').val('');
+            $('#fullName').val('');
+            $('#processType').val('');
+            $('#amount').val('');
+            $('#processDate').val('');
+            $('#processed').prop('checked', false);
+        });
+
+        $('#openPopupUpdate tbody tr').dblclick(function(){
+        var rowData = $(this).children('td').map(function(){
+            return $(this).text();
+                }).get();
+        console.log(rowData)
+        // Hiển thị thông tin của hàng double click trong popup
+        $('#memberCode').val(rowData[2]);
+        $('#fullName').val(rowData[3]);
+        $('#processType').val(rowData[4]);
+        $('#amount').val(rowData[4]);
+        var date = new Date(rowData[1]);
+
+        // Lấy ngày, tháng và năm từ đối tượng Date
+        var year = date.getFullYear();
+        var month = String(date.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0 nên cần cộng thêm 1
+        var day = String(date.getDate()).padStart(2, '0');
+
+        // Tạo chuỗi định dạng yyyy-MM-dd
+        var formattedDate = year + '-' + month + '-' + day;
+        $('#processDate').val(formattedDate);
+        $('#processed').prop('checked', rowData[6] == 1);
+        // Mở popup
+        $('#popupUpdate').modal('show');
+        });
+
+    });
+</script>
 </body>
 </html>
