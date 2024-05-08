@@ -8,9 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.DAO.MemberDAO;
-import com.example.Model.Member;
-import com.example.Model.ResponseStructure;
+import com.example.member_management_p3.DAO.MemberDAO;
+import com.example.member_management_p3.Model.Member;
+import com.example.member_management_p3.Model.ResponseStructure;
 
 @Service
 public class MemberService {

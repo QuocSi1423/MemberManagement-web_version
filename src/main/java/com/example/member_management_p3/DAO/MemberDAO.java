@@ -1,4 +1,4 @@
-package com.example.DAO;
+package com.example.member_management_p3.DAO;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -12,11 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.member_management_p3.Model.Member;
 import com.example.member_management_p3.repository.MemberRepository;
-import com.example.Model.Member;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
 import java.io.Reader;

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Violation Details</title>
+    <style>
+        .violation-info {
+            border: 1px solid #dddddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 300px;
+        }
+        .violation-info p {
+            margin: 5px 0;
+        }
+        .violation-info p span {
+            font-weight: bold;
+        }
+    </style>
+    <link th:href="@{style/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+<form action="#" method="post">
+    <p>Mã xử lý: <input type="text" name="violationId" th:value="${violation.violationId}"></p>
+    <p>Ngày: <input type="text" name="date" th:value="${violation.date}"></p>
+    <p>Mã thành viên: <input type="text" name="memberId" th:value="${violation.memberId}"></p>
+    <p>Tên thành viên: <input type="text" name="memberName" th:value="${violation.member.name}"></p>
+    <p>Hình thức xử lý: <input type="text" name="handlingType" th:value="${violation.handlingType}"></p>
+    <p>Số tiền phạt: <input type="text" name="fine" th:value="${violation.fine}"></p>
+    <p>Đã xử lý: <input type="checkbox" name="status" th:checked="${violation.status == 1}"></p>
+
+    <br>
+    <button type="submit">Save</button>
+</form>
+
+</body>
+</html>

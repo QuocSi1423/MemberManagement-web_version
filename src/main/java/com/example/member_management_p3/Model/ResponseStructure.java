@@ -1,4 +1,4 @@
-package com.example.Model;
+package com.example.member_management_p3.Model;
 import org.json.JSONObject;
 
 public class ResponseStructure <T>{
