@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Members</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        /* Button styling */
+        button {
+            background-color: #149cc5; 
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            transition-duration: 0.4s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .search-container {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        #searchBar {
+            padding: 10px;
+            font-size: 17px;
+            border: 1px solid grey;
+            float: left;
+            width: 60%;
+            background: #f1f1f1;
+            border-radius: 5px;
+        }
+
+        #searchButton {
+            float: left;
+            width: 20%;
+            padding: 10px;
+            background: #2196F3;
+            color: white;
+            font-size: 17px;
+            border: 1px solid grey;
+            border-left: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #searchButton:hover {
+            background: #0b7dda;
+        }
+    </style>
+</head>
+<body>
+    <h1>All Members</h1>
+    <div class="search-container">
+        <input type="text" id="searchBar" placeholder="Search by name">
+        <button id="searchButton">Search</button>
+    </div>
+    <a href="single_member_adding_form">
+        <button>Thêm thành viên</button>
+    </a>
+    <a href="adding_members_from_file">
+        <button>Thêm từ file</button>
+    </a>
+    <a href="deleting_members_by_conditions_form">
+        <button>Xóa với bộ lọc</button>
+    </a>
+    <!-- <button>Xóa với bộ lọc</button> -->
+    <table>
+        <tr>
+            <th>MaTV</th>
+            <th>HoTen</th>
+            <th>Email</th>
+            <th>Sdt</th>
+            <th>Nganh</th>
+            <th>Khoa</th>
+            <th>Hành động</th>
+        </tr>
+        <tr th:each="member : ${members}">
+            <td th:text="${member.maTV}"></td>
+            <td th:text="${member.hoTen}"></td>
+            <td th:text="${member.email}"></td>
+            <td th:text="${member.sdt}"></td>
+            <td th:text="${member.nganh}"></td>
+            <td th:text="${member.khoa}"></td>
+            <td>
+                <a th:href="@{/admin/member/delete_member/{maTV}(maTV=${member.maTV})}" th:data-matv="${member.maTV}" onclick="return confirm('Bạn có muốn xóa thành viên này')"> <button>Xóa thành viên</button></a>
+                <a th:href="@{/admin/member/update_member_form/{maTV}(maTV=${member.maTV})}" class="button"><button>Chỉnh sửa thông tin thành viên</button></a>
+            </td>
+        </tr>
+    </table>
+    <script>
+        document.getElementById('searchButton').addEventListener('click', function() {
+            var name = document.getElementById('searchBar').value;
+            window.location.href = '/admin/member/get_members_by_name/' + name;
+        });
+    </script>
+</body>
+</html>

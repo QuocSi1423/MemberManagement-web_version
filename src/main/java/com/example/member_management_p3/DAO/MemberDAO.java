@@ -38,6 +38,7 @@ public class MemberDAO {
             memberRepository.save(member);
             return true;
         } catch (Exception e) {
+            // System.out.println("Error: " + e.getMessage());
             return false;
         }
     }
@@ -63,6 +64,7 @@ public class MemberDAO {
     }
 
     public String addMembersFromFile(MultipartFile file) {
+        // System.out.println("Add members from file from dao");
         try {
             Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
             Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
@@ -70,13 +72,16 @@ public class MemberDAO {
             List<Member> members = new ArrayList<>();
             for (CSVRecord record : records) {
                 Member member = new Member();
-                member.setMaTV(Long.parseLong(record.get("MaTV")));
-                member.setHoTen(record.get("HoTen"));
-                member.setKhoa(record.get("Khoa"));
-                member.setNganh(record.get("Nganh"));
-                member.setSdt(record.get("SDT"));
-                member.setPassword(record.get("PassWord"));
-                member.setEmail(record.get("Email"));
+                // System.out.println(record.toString());
+                // MaTV	HoTen	Khoa	Nganh	SDT	PassWord	Email
+
+                member.setMaTV(Long.parseLong(record.get(0)));
+                member.setHoTen(record.get(1));
+                member.setKhoa(record.get(2));
+                member.setNganh(record.get(3));
+                member.setSdt(record.get(4));
+                member.setPassword(record.get(5));
+                member.setEmail(record.get(6));
                 members.add(member);
             }
             
@@ -96,6 +101,7 @@ public class MemberDAO {
                 return false;
             }
         } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
             return false;
         }
     }

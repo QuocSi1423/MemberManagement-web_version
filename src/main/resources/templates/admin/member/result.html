@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Result</title>
+    <style>
+        .success {
+            color: green;
+            font-size: 2em;
+            text-align: center;
+        }
+        .fail {
+            color: red;
+            font-size: 2em;
+            text-align: center;
+        }
+        .back-button {
+            display: block;
+            width: 200px;
+            height: 50px;
+            margin: 20px auto;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            line-height: 50px;
+            text-decoration: none;
+            font-size: 1.2em;
+            border-radius: 5px;
+        }
+        .back-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div th:if="${#strings.contains(response, 'successfully')}" class="success">
+        <p th:text="${response}"></p>
+    </div>
+    <div th:if="${#strings.contains(response, 'successfully') == false}" class="fail">
+        <p th:text="${response}"></p>
+    </div>
+    <a href="/admin/member/get_all_members" class="back-button">Go Back</a>
+</body>
+</html>

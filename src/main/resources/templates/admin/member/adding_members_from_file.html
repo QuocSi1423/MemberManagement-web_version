@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload CSV File</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        form {
+            margin: 30px auto;
+            width: 50%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px #aaa;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <form action="/admin/add_members/submit_file" method="post" enctype="multipart/form-data">
+            <input type="file" id="csvFile" name="file" accept=".csv,.xlsx">
+            <input type="submit" value="Upload">
+        </form>
+        <table id="csvTable">
+            <thead>
+                <tr>
+                    <th>MaTV</th>
+                    <th>HoTen</th>
+                    <th>Khoa</th>
+                    <th>Nganh</th>
+                    <th>SDT</th>
+                    <th>PassWord</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.getElementById('csvFile').addEventListener('change', function(evt) {
+            var file = evt.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var contents = e.target.result;
+                var lines = contents.split('\n');
+                var tableBody = '';
+                for (var i = 1; i < lines.length; i++) {
+                    var row = lines[i].split(',');
+                    tableBody += '<tr><td>' + row.join('</td><td>') + '</td></tr>';
+                }
+                document.getElementById('csvTable').getElementsByTagName('tbody')[0].innerHTML = tableBody;
+            };
+            reader.readAsText(file);
+        });
+    </script>
+</body>
+</html>

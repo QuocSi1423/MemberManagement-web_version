@@ -22,64 +22,30 @@ public class MemberService {
         this.memberDao = memberDao;
     }
 
-    public ResponseStructure<Member> addMember(Member member) {
-        ResponseStructure<Member> response = new ResponseStructure<Member>();
-        if (memberDao.addMember(member)) {
-            response.setStatusCode(HttpStatus.CREATED.value());
-            response.setMessage("add member successfully");
-            response.setData(null);
-        } else {
-            response.setStatusCode(HttpStatus.CREATED.value());
-            response.setMessage("fail to add member");
-            response.setData(null);
-        }
-        return response;
+    public String addMember(Member member) {
+        if (memberDao.addMember(member))
+            return "add member successfully";
+        return "fail to add member";
     }
 
-    public ResponseStructure<Member> addMultipleMembers(List<Member> members) {
-        ResponseStructure<Member> response = new ResponseStructure<Member>();
+    public String addMultipleMembers(List<Member> members) {
         String result = memberDao.addMultipleMembers(members);
-        if (result.equals("")) {
-            response.setStatusCode(HttpStatus.CREATED.value());
-            response.setMessage("add members successfully");
-            response.setData(null);
-        } else {
-            response.setMessage("fail to add members with id: " + result);
-            response.setStatusCode(HttpStatus.CREATED.value());
-            response.setData(null);
-
-        }
-        return response;
+        if (result.equals("")) 
+            return "add members successfully";
+        return "fail to add members with id: " + result;
     }
 
-    public ResponseStructure<Member> addMembersFromFile(MultipartFile file) {
-        ResponseStructure<Member> response = new ResponseStructure<Member>();
+    public String addMembersFromFile(MultipartFile file) {
         String result = memberDao.addMembersFromFile(file);
-        if (result.equals("")) {
-            response.setStatusCode(HttpStatus.CREATED.value());
-            response.setMessage("add members successfully");
-            response.setData(null);
-        } else {
-            response.setMessage("fail to add members with id: " + result);
-            response.setStatusCode(HttpStatus.CREATED.value());
-            response.setData(null);
-
-        }
-        return response;
+        if (result.equals("")) 
+            return "add members successfully";
+        return "fail to add members with id: " + result;
     }
 
-    public ResponseStructure<Member> updateMember(Member member) {
-        ResponseStructure<Member> response = new ResponseStructure<Member>();
-        if (memberDao.updateMember(member)) {
-            response.setStatusCode(HttpStatus.CREATED.value());
-            response.setMessage("update member successfully");
-            response.setData(null);
-        } else {
-            response.setStatusCode(HttpStatus.CREATED.value());
-            response.setMessage("fail to member");
-            response.setData(null);
-        }
-        return response;
+    public String updateMember(Member member) {
+        if (memberDao.updateMember(member))
+            return "update member successfully";
+        return "fail to update member";
     }
 
     public ResponseStructure<Member> updateMaTV(Long oldMaTV, Long newMaTV) {
@@ -96,78 +62,31 @@ public class MemberService {
         return response;
     }
 
-    public ResponseStructure<List<Member>> getAllMembers() {
-        ResponseStructure<List<Member>> response = new ResponseStructure<List<Member>>();
+    public List<Member> getAllMembers() {
         List<Member> members = memberDao.getAllMembers();
-        if (members.size() > 0) {
-            response.setMessage("get list of members successfully");
-            response.setStatusCode(HttpStatus.CREATED.value());
-            response.setData(members);
-        } else {
-            response.setMessage("no member found");
-            response.setStatusCode(HttpStatus.CREATED.value());
-            response.setData(null);
-        }
-        return response;
+        return members;
     }
 
-    public ResponseStructure<Member> getMemberById(long memberId) {
+    public Member getMemberById(long memberId) {
         ResponseStructure<Member> response = new ResponseStructure<Member>();
         Member member = memberDao.getMemberById(memberId);
-        // return member;
-        if (member != null) {
-            // return member;
-            response.setStatusCode(HttpStatus.CREATED.value());
-            response.setMessage("Found");
-            response.setData(member);
-            return response;
-        } 
-        response.setStatusCode(HttpStatus.CREATED.value());
-        response.setMessage("not found");
-        response.setData(member);
-        return response;
+        return member;
     }
 
-    public ResponseStructure<List<Member>> getMembersByName(String hoTen) {
-        ResponseStructure<List<Member>> response = new ResponseStructure<List<Member>>();
+    public List<Member> getMembersByName(String hoTen) {
         List<Member> members = memberDao.getMembersByName(hoTen);
-        if (members.size() > 0) {
-            response.setMessage("get list of members successfully");
-            response.setStatusCode(HttpStatus.CREATED.value());
-            response.setData(members);
-        } else {
-            response.setMessage("no member found");
-            response.setStatusCode(HttpStatus.CREATED.value());
-            response.setData(null);
-        }
-        return response;
+        return members;
     }
 
-    public ResponseStructure<Member> deleteMember(long memberId) {
-        ResponseStructure<Member> response = new ResponseStructure<Member>();
-        if (memberDao.deleteMember(memberId)) {
-            response.setStatusCode(HttpStatus.CREATED.value());
-            response.setMessage("delete member successfully");
-            response.setData(null);
-        } else {
-            response.setStatusCode(HttpStatus.CREATED.value());
-            response.setMessage("fail to delete member");
-            response.setData(null);
-        }
-        return response;
+    public String deleteMember(long memberId) {
+        if (memberDao.deleteMember(memberId)) 
+            return "delete member successfully";
+        return "fail to delete member";
     }
 
-    public ResponseStructure<Member> deleteMembersByConditions(String khoa, String nganh, String maTVSubstring) {
-        ResponseStructure<Member> response = new ResponseStructure<Member>();
-        if (memberDao.deleteMembersByConditions(khoa, nganh, maTVSubstring)) {
-            response.setStatusCode(HttpStatus.CREATED.value());
-            response.setMessage("delete members successfully");
-            response.setData(null);
-        } else {
-            response.setStatusCode(HttpStatus.CREATED.value());
-            response.setMessage("fail to delete members");
-            response.setData(null);
-        }
-        return response;
+    public String deleteMembersByConditions(String khoa, String nganh, String maTVSubstring) {
+        if (memberDao.deleteMembersByConditions(khoa, nganh, maTVSubstring))
+            return "delete members successfully";
+        return "fail to delete members";
     }
 }
