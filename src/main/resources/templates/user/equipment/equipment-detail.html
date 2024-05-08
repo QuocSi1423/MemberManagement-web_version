@@ -1,0 +1,26 @@
+<div class="container">
+    <h1>Chi tiết thiết bị</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Tên Thành viên</th>
+            <th scope="col">Tên Thiết bị</th>
+            <th scope="col">Thời gian ượn</th>
+            <th scope="col">Thời gian Đặt chỗ</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item, itemStat : ${bookings}">
+            <td th:text="${item.Hoten}"></td>
+            <td th:text="${item.TenTB}"></td>
+            <td th:text="${item.etgmuon}"></td>
+            <td th:text="${item.tgdatcho}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!--private String ;
+    private String ;
+    private LocalDateTime ;
+    private LocalDateTime tgtral;-->

@@ -1,6 +1,7 @@
 package com.example.member_management_p3.Service;
 
 import com.example.member_management_p3.DAO.EquipmentDAO;
+import com.example.member_management_p3.Model.Entity.Booking;
 import com.example.member_management_p3.Model.Entity.Equipment;
 import com.example.member_management_p3.Responsitory.EquipmentRespository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,9 @@ public class EquipmentService {
 
     public Boolean bookingEquipment(int id, LocalDateTime timeNow){
         return equipmentDAO.checkEquipment(id, timeNow);
+    }
+
+    public List<Booking> getBookingsForEquipmentFromDate(int id, LocalDateTime timeNow){
+        return equipmentDAO.getBookingsForEquipmentFromDate(id, timeNow);
     }
 }

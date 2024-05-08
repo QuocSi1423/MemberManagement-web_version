@@ -1,5 +1,6 @@
 package com.example.member_management_p3.Controller;
 
+import com.example.member_management_p3.Model.Entity.Booking;
 import com.example.member_management_p3.Model.Entity.Equipment;
 import com.example.member_management_p3.Model.Entity.Member;
 import com.example.member_management_p3.Model.Entity.UsageInfo;
@@ -10,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -64,15 +62,44 @@ public class EquipmentController {
         return "user/index";
     }
 
-
-    public String bookingEquipment(@ModelAttribute UsageInfo usageInfo, Model model, @PathVariable int equipmentId, @PathVariable LocalDateTime timeNow){
+    @PostMapping("/bookEquipment")
+    public String bookEquipment(Model model, @RequestParam("userId") String userId,
+                                @RequestParam("equipmentId") String equipmentId,
+                                @RequestParam("bookingTime") LocalDateTime bookingTime) {
         String success = "Thiết bị đã được mượn thành công";
         String err = "Thiết bị đã được mượn thất bại";
-        if (equipmentService.bookingEquipment(equipmentId, timeNow)){
+        LocalDateTime now = LocalDateTime.now();
+        if (equipmentService.bookingEquipment(Integer.parseInt(equipmentId), now)){
+            UsageInfo usageInfo = new UsageInfo();
+            usageInfo.setMaTV(Integer.parseInt(userId));
+            usageInfo.setMaTB(Integer.parseInt(equipmentId));
+            usageInfo.setTgdatcho(bookingTime);
+            usageInfo.setTgmuon(now);
             String response = usageInfoService.addUsageInfo(usageInfo);
+            System.out.println(response);
+            model.addAttribute("success", success);
             model.addAttribute("response", response);
             return "user/equipment/equipment";
         }
+        model.addAttribute("err", err);
         return "user/equipment/equipment";
+    }
+
+
+    @PostMapping("/viewDeitailEquipmen")
+    public String viewEquipmentDetails(@RequestParam("MaTB") int maTB, Model model) {
+        LocalDateTime today = LocalDateTime.now();
+        List<Booking> bookings = equipmentService.getBookingsForEquipmentFromDate(maTB, today);
+        String success = "Thiết bị đã được mượn";
+        String err = "Thiết bị chưa được mượn";
+        if (bookings.isEmpty()) {
+            model.addAttribute("err", err);
+        }
+        // Đưa thông tin vào model để trả về cho view
+        model.addAttribute("success", success);
+        model.addAttribute("bookings", bookings);
+
+        // Trả về tên của view để hiển thị thông tin
+        return "user/equipment/equipment-detail";
     }
 }

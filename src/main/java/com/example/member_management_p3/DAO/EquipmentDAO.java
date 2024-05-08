@@ -1,10 +1,12 @@
 package com.example.member_management_p3.DAO;
 
+import com.example.member_management_p3.Model.Entity.Booking;
 import com.example.member_management_p3.Model.Entity.Equipment;
 import com.example.member_management_p3.Responsitory.EquipmentRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.awt.print.Book;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -43,5 +45,14 @@ public class EquipmentDAO {
             }
         }
         return false;
+    }
+
+
+    public List<Booking> getBookingsForEquipmentFromDate(int equipmentId, LocalDateTime timeNow){
+        List <Booking> bookings = equipmentRespository.getBookingsForEquipmentFromDate(equipmentId, timeNow);
+        if (bookings.isEmpty()) {
+            return null;
+        }
+        return bookings;
     }
 }

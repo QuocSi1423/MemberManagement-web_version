@@ -1,4 +1,3 @@
-
 <div class="container">
     <div class="search">
         <i class="fa fa-search"></i>
@@ -30,9 +29,32 @@
             <td th:text="${equipmentItem.MaTB}"></td>
             <td th:text="${equipmentItem.TenTB}"></td>
             <td>
-                <button class="btn btn-primary" >??t Ch?</button>
+                <a class="btn btn-primary" th:attr="onclick='showBookingForm(\'' + ${equipmentItem.MaTB} + '\')'">??t Ch?</a>
+                <form th:action="@{/viewDeitailEquipmen}" method="post" style="display: inline;">
+                    <input type="hidden" name="MaTB" th:value="${equipmentItem.MaTB}" />
+                    <button type="submit" class="btn btn-success">Xem Chi Ti?t</button>
+                </form>
             </td>
         </tr>
+
+        <div id="bookingForm" style="display: none;">
+            <form th:action="@{/bookEquipment}" method="post">
+                <input type="hidden" name="userId" th:value="1190308010" />
+                <input type="hidden" name="equipmentId" id="equipmentId" />
+                <label for="bookingTime">Ch?n th?i gian ??t ch?:</label>
+                <input type="datetime-local" id="bookingTime" name="bookingTime" required />
+                <button type="submit" class="btn btn-primary">Xác Nh?n</button>
+            </form>
+        </div>
+
+        <script>
+            function showBookingForm(equipmentId) {
+                console.log(equipmentId);
+                alert(equipmentId);
+                document.getElementById("equipmentId").value = equipmentId;
+                document.getElementById("bookingForm").style.display = "block";
+            }
+        </script>
         </tbody>
     </table>
 </div>
