@@ -84,7 +84,6 @@ public class UsageController {
             usage.setUsageId(maTT);
             return new ResponseEntity<>(usageService.updateUsage(usage), HttpStatus.OK);
         } else {
-            ;
             return ResponseEntity.notFound().build();
         }
     }

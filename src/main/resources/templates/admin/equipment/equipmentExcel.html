@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <title>Thêm dữ liệu từ Excel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 737px; /* Adjusted width */
+            height: 630px; /* Adjusted height */
+            margin: 100px auto; /* Updated margin */
+            padding: 100px; /* Added padding */
+            /*fixx*/
+            overflow-y: auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #000000;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+
+            background-color: #F1F1F1;
+            color: black;
+        }
+
+        .th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        .th {
+            background-color: #0066FF;
+            color: white;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        #btn-cancel {
+            background-color: #C9C9C9;
+            color: black;
+            margin-top: 10px;
+            width: 131px;
+            height: 46px;
+            margin-left: 60%;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        #btn-add {
+            background-color: #0066FF;
+            color: white;
+            margin-top: 10px;
+            width: 131px;
+            height: 46px;
+            font-weight: bold;
+            font-size: 20px;
+
+
+        }
+
+        .card-body {
+            padding: 10px;
+        }
+
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Thêm dữ liệu từ file excel</h1>
+    <div class="card">
+        <div class="card-header"><b>Chọn file excel</b></div>
+        <div class="card-body">
+            <input class="file" type="file" id="excel_file"/>
+        </div>
+    </div>
+    <div id="excel_data" class="mt-5"></div>
+    <table id="excel-table">
+        <thead>
+        <tr>
+            <th class="th">Mã Thết bị</th>
+            <th class="th">Tên thiết bị</th>
+            <th class="th">Mô tả</th>
+
+        </tr>
+        </thead>
+        <tbody id=table-body>
+
+        </tbody>
+    </table>
+    <div>
+        <button id="btn-cancel" onclick="cancel()">Hủy</button>
+        <button id="btn-add" onclick="add()">Thêm</button>
+    </div>
+</div>
+<script>
+
+    function cancel() {
+        window.close();
+    }
+
+    function add() {
+        const table = document.getElementById("excel-table");
+        const rows = table.getElementsByTagName("tr");
+        const equipments = [];
+
+        for (let i = 1; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName("td");
+            const equipment = {
+                maTB: cells[0].textContent,
+                tenTB: cells[1].textContent,
+                moTaTB: cells[2].textContent,
+                mo_tatb:null
+            };
+            equipments.push(equipment);
+        }
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "/api/equipments/equipment/addAll", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(JSON.stringify(equipments));
+        alert('Thêm thành công')
+    }
+
+
+
+    document.getElementById('excel_file').addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, {type: 'array'});
+
+            const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+
+            const tableBody = document.getElementById('table-body');
+            jsonData.forEach(function (rowData, rowIndex) {
+                if (rowIndex === 0) return;
+                const row = document.createElement('tr');
+                rowData.forEach(function (cellData) {
+                    const cell = document.createElement('td');
+                    cell.textContent = cellData;
+                    row.appendChild(cell);
+                });
+                tableBody.appendChild(row);
+            });
+        };
+        reader.readAsArrayBuffer(file);
+    });
+
+</script>
+</body>
+</html>
