@@ -32,8 +32,8 @@ public class Violation {
     @Column(name = "MaXL")
     private Integer violationId;
 
-    @Column(name = "MaTV")
-    private Integer memberId;
+    @Column(name = "MaTV", insertable = false, updatable = false)
+    private Long memberId;
 
     @Column(name = "HinhthucXL")
     private String handlingType;
@@ -49,6 +49,6 @@ public class Violation {
     private Integer status;
 
     @ManyToOne(fetch = FetchType.EAGER) 
-    @JoinColumn(name = "MaTV", referencedColumnName = "member_id", insertable = false, updatable = false)
+    @JoinColumn(name = "MaTV", referencedColumnName = "member_id")
     private SimpleMember member;
 }

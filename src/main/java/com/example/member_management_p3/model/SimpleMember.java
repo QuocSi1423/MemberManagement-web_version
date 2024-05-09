@@ -20,7 +20,7 @@ public class SimpleMember {
     
     @Id
     @Column(name = "member_id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "name")
     private String name;

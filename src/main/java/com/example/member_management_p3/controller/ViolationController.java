@@ -1,5 +1,6 @@
-package com.example.member_management_p3.Controller;
+package com.example.member_management_p3.controller;
 
+import java.lang.reflect.Member;
 import java.util.Date;
 import java.util.List;
 
@@ -8,7 +9,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,10 +26,9 @@ public class ViolationController {
     @Autowired
     private final ViolationService violationService;
 
-    public ViolationController(ViolationService ViolationService) {
-        this.violationService = ViolationService;
+    public ViolationController(ViolationService violationService) {
+        this.violationService = violationService;
     }
-
     
     @GetMapping
     public String showViolationPage(@RequestParam(value = "filter", required = false) String filter, Model model) {
@@ -82,7 +81,7 @@ public class ViolationController {
     }
 
     @PostMapping("/new")
-    public String addViolation(@RequestParam("memberId") Integer memberId,
+    public String addViolation(@RequestParam("memberId") Long memberId,
             @RequestParam("handlingType") String handlingType,
             @RequestParam("fine") Integer fine,
             @RequestParam("status") String status,
