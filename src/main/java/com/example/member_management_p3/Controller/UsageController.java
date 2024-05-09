@@ -53,7 +53,7 @@ public class UsageController {
     }
 
     @PostMapping("/usage/add")
-    public String addUsage(@RequestBody Usage usage) {
+    public String addUsage(@ModelAttribute("usage") Usage usage) {
         usage.setBorrowingTime(new Timestamp(System.currentTimeMillis()));
         try {
             usageService.createUsage(usage);

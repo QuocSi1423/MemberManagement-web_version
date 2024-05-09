@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <head>
+<head>
     <title>My App</title>
-    <link th:href="@{style/index.css}" rel="stylesheet" />
-    <link th:href="@{style/general.css}" rel="stylesheet" />
+    <link th:href="@{style/index.css}" rel="stylesheet"/>
+    <link th:href="@{style/general.css}" rel="stylesheet"/>
 
-  </head>
-  <body>
-    <div class="user-page">
-      <div class="navigation">
+</head>
+<body>
+<div class="user-page">
+    <div class="navigation">
         <a th:href="@{/profile}" href="/profile">Tôi</a>
         <a th:href="@{/reservation}" href="/reservation">Thiết bị và đặt chõ</a>
-        
-      </div>
-      <div id="user-container">
-        <div th:replace="${content}"></div>
-      </div>
+
     </div>
-  </body>
+    <div id="user-container">
+        <div th:replace="${content}"></div>
+    </div>
+</div>
+</body>
 </html>
