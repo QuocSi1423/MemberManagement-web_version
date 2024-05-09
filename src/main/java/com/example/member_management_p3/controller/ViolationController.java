@@ -84,13 +84,13 @@ public class ViolationController {
     public String addViolation(@RequestParam("memberId") Long memberId,
             @RequestParam("handlingType") String handlingType,
             @RequestParam("fine") Integer fine,
-            @RequestParam("status") String status,
+            @RequestParam(value = "status", required = false) String status,
             @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
         Violation violation = new Violation();
-        violation.setMemberId(memberId);
+        violation.setMember(new SimpleMember(memberId, null));
         violation.setDate(date);
         violation.setFine(fine);
-        violation.setStatus(status.equals("on")? 1 : 0);
+        violation.setStatus(String.valueOf(status).equals("on")? 1 : 0);
         violation.setHandlingType(handlingType);
         if (violationService.insertViolation(violation) == Global.SUCCESSFUL)
             return "redirect:/admin/violations";

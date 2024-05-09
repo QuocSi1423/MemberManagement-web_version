@@ -116,26 +116,26 @@
 
                     <div class="form-group mt-2">
                         <label for="memberCodeAdd">Mã thành viên:</label>
-                        <input type="text" class="form-control" id="memberCodeAdd" name="memberId">
+                        <input type="text" class="form-control" id="memberCodeAdd" name="memberId" required>
                     </div>
                     <div class="form-group mt-2">
                         <label for="fullNameAdd">Họ và tên:</label>
-                        <input type="text" class="form-control" id="fullNameAdd">
+                        <input type="text" class="form-control" id="fullNameAdd" text="">
                     </div>
                     <div class="form-group mt-2">
                         <label for="processTypeAdd">Hình thức xử lý:</label>
-                        <input type="text" class="form-control" id="processTypeAdd" name="handlingType">
+                        <input type="text" class="form-control" id="processTypeAdd" name="handlingType" required>
                     </div>
                     <div class="form-group mt-2">
                         <label for="amountAdd">Số tiền:</label>
-                        <input type="text" class="form-control" id="amountAdd" name="fine">
+                        <input type="text" class="form-control" id="amountAdd" name="fine" required>
                     </div>
                     <div class="form-group mt-2">
                         <label for="processDateAdd">Ngày xử lý:</label>
-                        <input type="date" class="form-control" id="processDateAdd" name="date">
+                        <input type="date" class="form-control" id="processDateAdd" name="date" required>
                     </div>
                     <div class="form-check mt-2">
-                        <input type="checkbox" class="form-check-input" id="processedAdd" name="status">
+                        <input type="checkbox" class="form-check-input" id="processedAdd" name="status" >
                         <label class="form-check-label" for="processedAdd">Đã xử lý</label>
                     </div>
                 </div>
@@ -197,8 +197,9 @@
     $(document).ready(function(){
     // Handle event click để show popup add violation
         $('#openPopupAdd').click(function(){
-        console.log($(this))
+            console.log($(this))
             $('#popupAdd').modal('show');
+            currentDate();
         });
 
         $('#clearFieldsButtonAdd').click(function(){
@@ -245,6 +246,15 @@
         });
 
     });
+
+    const currentDate = () => {
+    // Get today's date in YYYY-MM-DD format
+    var today = new Date().toISOString().split('T')[0];
+    
+    // Set the input field value to today's date
+    document.getElementById("processDateAdd").value = today;
+    }
+
 </script>
 </body>
 </html>
