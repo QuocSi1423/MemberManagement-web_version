@@ -35,7 +35,9 @@ public class ViolationController {
     }
     
     @GetMapping
-    public String showViolationPage(@RequestParam(value = "filter", required = false) String filter, Model model) {
+    public String showViolationPage(@RequestParam(value = "filter", required = false) String filter,
+                                    @RequestParam(value = "key", required = false) String keySearch, 
+                                    Model model) {
         Integer status = null;
         Date startDate = null;
         Date endDate = null;
@@ -53,6 +55,7 @@ public class ViolationController {
 
         // load data
         violations = violationService.getViolationListByFilter(status, startDate, endDate);
+        violations = violationService.getViolationListByKeyword(keySearch, violations);
 
         // Gửi danh sách vi phạm đến trang HTML để hiển thị
         model.addAttribute("violations", violations);

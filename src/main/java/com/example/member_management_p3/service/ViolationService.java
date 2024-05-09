@@ -81,11 +81,12 @@ public class ViolationService {
         if (currentList == null) {
             currentList = violationRepository.getViolationListByFilter(null, null, null);
         }
+        key = String.valueOf(key);
 
         List<Violation> resultList = new ArrayList<>();
         for (Violation violation : currentList) {
             String temp = violation.toString();
-            if (temp.contains(key)) {
+            if (temp.contains(key.toLowerCase()) || temp.contains(key.toUpperCase())) {
                 resultList.add(violation);
             }
         }
