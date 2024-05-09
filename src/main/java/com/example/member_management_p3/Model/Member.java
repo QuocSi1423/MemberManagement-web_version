@@ -1,8 +1,7 @@
 package com.example.member_management_p3.Model;
 
 import jakarta.persistence.*;
-import org.json.JSONException;
-import org.json.JSONObject;
+
 @Entity
 @Table(name = "thanhvien")
 public class Member {
@@ -113,15 +112,5 @@ public class Member {
                 '}';
     }
 
-    public JSONObject toJson() throws JSONException {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("maTV", maTV);
-        jsonObject.put("hoTen", hoTen);
-        jsonObject.put("khoa", khoa);
-        jsonObject.put("nganh", nganh);
-        jsonObject.put("password", password);
-        jsonObject.put("email", email);
-        jsonObject.put("sdt", sdt);
-        return jsonObject;
-    }
+
 }
