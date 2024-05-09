@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -97,5 +98,33 @@ public class ViolationController {
         else
         // hien dialog thong bao them that bai
             return "redirect:/admin/violations/new";
+    }
+
+    @PostMapping("/save")
+    public String updateViolation(@RequestParam("violationId") Integer violationId, 
+                @RequestParam(value = "status", required = false) String status, Model model) {
+
+        System.out.print(violationId);
+
+        Violation violation = new Violation();
+        violation.setViolationId(violationId);
+        violation.setStatus(String.valueOf(status).equals("on")? 1 : 0);
+    
+        if (violationService.changeStatus(violation) == Global.SUCCESSFUL)        
+            model.addAttribute("message", "Lưu thành công!");
+        else
+            model.addAttribute("message", "Đã có lỗi xảy ra!");
+        
+        return "redirect:/admin/violations";
+    }
+
+    @DeleteMapping()
+    public String deleteViolation(@RequestParam("violationId") Integer violationId, Model model) {
+        if (violationService.deleteViolation(violationId) == Global.SUCCESSFUL)
+            model.addAttribute("message", "Xoá thành công!");
+        else
+            model.addAttribute("message", "Đã có lỗi xảy ra!");
+        
+        return "redirect:/admin/violations";
     }
 }

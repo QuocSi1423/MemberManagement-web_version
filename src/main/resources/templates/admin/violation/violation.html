@@ -156,36 +156,41 @@
                 <h4 class="modal-title ">Sửa thông tin vi phạm</h4>
                 <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <div class="form-group mt-2">
-                    <label for="memberCode">Mã thành viên:</label>
-                    <input type="text" class="form-control" id="memberCode">
+            <form th:action="@{/admin/violations/save}" method="post">
+                <div class="modal-body">
+                    <div>
+                        <input type="hidden" id="violationId" name="violationId" value="${violationId}">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="memberCode">Mã thành viên:</label>
+                        <input type="text" class="form-control" id="memberCode" readonly>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="fullName">Họ và tên:</label>
+                        <input type="text" class="form-control" id="fullName" readonly>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="processType">Hình thức xử lý:</label>
+                        <input type="text" class="form-control" id="processType" readonly>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="amount">Số tiền:</label>
+                        <input type="text" class="form-control" id="amount" readonly>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="processDate">Ngày xử lý:</label>
+                        <input type="date" class="form-control" id="processDate" readonly>
+                    </div>
+                    <div class="form-check mt-2">
+                        <input type="checkbox" class="form-check-input" id="processed" name="status">
+                        <label class="form-check-label" for="processed">Đã xử lý</label>
+                    </div>
                 </div>
-                <div class="form-group mt-2">
-                    <label for="fullName">Họ và tên:</label>
-                    <input type="text" class="form-control" id="fullName">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="clearFieldsButton">Làm sạch</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
                 </div>
-                <div class="form-group mt-2">
-                    <label for="processType">Hình thức xử lý:</label>
-                    <input type="text" class="form-control" id="processType">
-                </div>
-                <div class="form-group mt-2">
-                    <label for="amount">Số tiền:</label>
-                    <input type="text" class="form-control" id="amount">
-                </div>
-                <div class="form-group mt-2">
-                    <label for="processDate">Ngày xử lý:</label>
-                    <input type="date" class="form-control" id="processDate">
-                </div>
-                <div class="form-check mt-2">
-                    <input type="checkbox" class="form-check-input" id="processed">
-                    <label class="form-check-label" for="processed">Đã xử lý</label>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="clearFieldsButton">Làm sạch</button>
-                <button type="button" class="btn btn-primary">Lưu</button>
-            </div>
+            </form>
         </div>
     </div>
 </div>
@@ -226,6 +231,7 @@
                 }).get();
         console.log(rowData)
         // Hiển thị thông tin của hàng double click trong popup
+        $('#violationId').val(rowData[0]);
         $('#memberCode').val(rowData[2]);
         $('#fullName').val(rowData[3]);
         $('#processType').val(rowData[4]);
