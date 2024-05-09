@@ -1,6 +1,5 @@
 package com.example.member_management_p3.controller;
 
-import java.lang.reflect.Member;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +24,8 @@ public class ViolationController {
 
     @Autowired
     private final ViolationService violationService;
+    List<Violation> violations;
+
 
     public ViolationController(ViolationService violationService) {
         this.violationService = violationService;
@@ -48,7 +49,6 @@ public class ViolationController {
         // .. 
 
         // load data
-        List<Violation> violations;
         violations = violationService.getViolationListByFilter(status, startDate, endDate);
 
         // Gửi danh sách vi phạm đến trang HTML để hiển thị
@@ -95,6 +95,7 @@ public class ViolationController {
         if (violationService.insertViolation(violation) == Global.SUCCESSFUL)
             return "redirect:/admin/violations";
         else
+        // hien dialog thong bao them that bai
             return "redirect:/admin/violations/new";
     }
 }

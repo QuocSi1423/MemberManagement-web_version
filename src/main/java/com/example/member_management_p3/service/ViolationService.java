@@ -1,5 +1,6 @@
 package com.example.member_management_p3.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -74,5 +75,21 @@ public class ViolationService {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public List<Violation> getViolationListByKeyword(String key, List<Violation> currentList) {
+        if (currentList == null) {
+            currentList = violationRepository.getViolationListByFilter(null, null, null);
+        }
+
+        List<Violation> resultList = new ArrayList<>();
+        for (Violation violation : currentList) {
+            String temp = violation.toString();
+            if (temp.contains(key)) {
+                resultList.add(violation);
+            }
+        }
+
+        return resultList;
     }
 }

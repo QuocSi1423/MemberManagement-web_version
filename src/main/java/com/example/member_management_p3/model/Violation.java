@@ -51,4 +51,9 @@ public class Violation {
     @ManyToOne(fetch = FetchType.EAGER) 
     @JoinColumn(name = "MaTV", referencedColumnName = "member_id")
     private SimpleMember member;
+
+    @Override
+    public String toString() {
+        return String.valueOf(violationId) + String.valueOf(memberId) + handlingType + String.valueOf(fine) + String.valueOf(date) + member.getName(); 
+    }
 }
