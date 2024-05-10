@@ -30,7 +30,11 @@
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
             <div class="btn-group">
-                <button class="btn btn-primary px-5 py-2 rounded-2 fw-medium ">Thêm từ file excel</button>
+                <!--                <button class="btn btn-primary px-5 py-2 rounded-2 fw-medium ">Thêm từ file excel</button>-->
+                <button id="checkDel" type="button" class="btn btn-secondary px-5 py-2 rounded-2 fw-medium"
+                        data-bs-toggle="modal">
+                    Xóa vi phạm
+                </button>
                 <button id="openPopupAdd" class="btn btn-danger px-5 y-2 ms-2 rounded-2 fw-medium ">+ Vi phạm</button>
             </div>
 
@@ -41,36 +45,39 @@
 <div class="violation-body">
 
     <div class="d-flex justify-content-between my-2">
-        <div>
-            <h1 class="ms-5 my-2 fw-medium fs-3">Danh Sách Vi Phạm</h1>
-            <form action="#" method="get">
+        <!--        <div>-->
+        <h1 class="ms-5 my-2 fw-medium fs-2">Danh Sách Vi Phạm</h1>
+        <form action="#" method="get" class="d-flex align-items-center me-4">
 
-                <ul class="btn-group ">
-                    <li class="list-group-item m-auto me-3 pb-0">
-                        <input class="form-check-input " type="radio" name="filter" value="all" id="firstRadio"
-                               th:checked="${all}">
-                        <label class="form-check-label" for="firstRadio">Tất cả</label>
-                    </li>
-                    <li class="list-group-item m-auto me-3 ">
-                        <input class="form-check-input  " type="radio" name="filter" value="processed"
-                               id="secondRadio"
-                               th:checked="${processed}">
-                        <label class="form-check-label" for="secondRadio">Đã xử lý</label>
-                    </li>
-                    <li class="list-group-item m-auto me-3 ">
-                        <input class="form-check-input " type="radio" name="filter" value="unprocessed"
-                               id="thirdRadio"
-                               th:checked="${unprocessed}">
-                        <label class="form-check-label" for="thirdRadio">Chưa xử lý</label>
-                    </li>
-                    <button class="btn btn-sm btn-primary" type="submit">Apply Filters</button>
-                </ul>
+            <ul class="btn-group pt-2">
+                <li class="list-group-item m-auto me-3 pb-0">
+                    <input class="form-check-input " type="radio" name="filter" value="all" id="firstRadio"
+                           th:checked="${all}">
+                    <label class="form-check-label" for="firstRadio">Tất cả</label>
+                </li>
+                <li class="list-group-item m-auto me-3 ">
+                    <input class="form-check-input  " type="radio" name="filter" value="processed"
+                           id="secondRadio"
+                           th:checked="${processed}">
+                    <label class="form-check-label" for="secondRadio">Đã xử lý</label>
+                </li>
+                <li class="list-group-item m-auto me-3 ">
+                    <input class="form-check-input " type="radio" name="filter" value="unprocessed"
+                           id="thirdRadio"
+                           th:checked="${unprocessed}">
+                    <label class="form-check-label" for="thirdRadio">Chưa xử lý</label>
+                </li>
+                <button class="btn btn-sm btn-primary" type="submit">Apply Filters</button>
+            </ul>
 
 
-            </form>
-        </div>
+        </form>
+        <!--        </div>-->
 
-        <button class="btn btn-secondary px-5 h-50 fw-medium align-self-center me-4" onclick="handleDelete()">Xóa vi phạm</button>
+        <!--        <button id="checkDel" type="button" class="btn btn-secondary px-5 h-50 fw-medium align-self-center me-4"-->
+        <!--                data-bs-toggle="modal">-->
+        <!--            Xóa vi phạm-->
+        <!--        </button>-->
     </div>
 
     <div class="table-responsive mx-4">
@@ -84,7 +91,7 @@
                 <th class="bg-primary text-white">Hình thức xử lý</th>
                 <th class="bg-primary text-white">Số tiền phạt</th>
                 <th class="bg-primary text-white">Trạng thái</th>
-                <th class="bg-primary text-white">Chọn</th>                
+                <th class="bg-primary text-white">Chọn</th>
             </tr>
             </thead>
             <tbody>
@@ -106,12 +113,12 @@
 </div>
 
 <!--Dialog Thêm thông tin vi phạm -->
-<div id="popupAdd" class="modal fade " role="dialog">
+<div id="popupAdd" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title fw-medium">Thêm vi phạm</h4>
-                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form th:action="@{/admin/violations/new}" method="post">
                 <div class="modal-body">
@@ -126,7 +133,17 @@
                     </div>
                     <div class="form-group mt-2">
                         <label for="processTypeAdd">Hình thức xử lý:</label>
-                        <input type="text" class="form-control" id="processTypeAdd" name="handlingType" required>
+                        <select id="processTypeAdd" name="handlingType" class="form-select"
+                                aria-label="Default select example" required>
+                            <option value="Bồi thường">Bồi thường</option>
+                            <option value="Khóa thẻ 1 tháng">Khóa thẻ 1 tháng</option>
+                            <option value="Khóa thẻ 2 tháng">Khóa thẻ 2 tháng</option>
+                            <option value="Khóa thẻ 1 tháng + bồi thường">Khóa thẻ 2 tháng + bồi thường
+                            </option>
+                            <option value="Khóa thẻ 2 tháng + bồi thường">Khóa thẻ 2 tháng + bồi thường
+                            </option>
+                            <option value="Khóa thẻ vĩnh viễn">Khóa thẻ vĩnh viễn</option>
+                        </select>
                     </div>
                     <div class="form-group mt-2">
                         <label for="amountAdd">Số tiền:</label>
@@ -137,7 +154,7 @@
                         <input type="date" class="form-control" id="processDateAdd" name="date" required>
                     </div>
                     <div class="form-check mt-2">
-                        <input type="checkbox" class="form-check-input" id="processedAdd" name="status" >
+                        <input type="checkbox" class="form-check-input" id="processedAdd" name="status">
                         <label class="form-check-label" for="processedAdd">Đã xử lý</label>
                     </div>
                 </div>
@@ -150,13 +167,50 @@
     </div>
 </div>
 
+
+<!-- Dialog thông báo delete -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Thông Báo</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Bạn có muốn xóa các mục vừa chọn không?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-danger" onclick="handleDelete()">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Dialog thông báo chưa đủ số lượng để delete -->
+<div class="modal fade" id="checkDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông báo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">Không tìm thấy mục muốn xóa</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!--Dialog Sửa thông tin vi phạm -->
 <div id="popupUpdate" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title ">Sửa thông tin vi phạm</h4>
-                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form th:action="@{/admin/violations/save}" method="post">
                 <div class="modal-body">
@@ -196,10 +250,34 @@
         </div>
     </div>
 </div>
+<!-- Dialog thông báo message -->
+<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="messageContent"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
+<form id="deleteForm" th:action="@{/admin/violations/delete}" method="post">
+    <!-- Thêm các trường input ẩn để chứa các tham số -->
+    <input type="hidden" name="selectedIds" id="selectedIds">
+    <!-- Các trường input khác nếu cần -->
+</form>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 <script th:inline="javascript">
     $(document).ready(function(){
     // Handle event click để show popup add violation
@@ -237,7 +315,7 @@
         $('#memberCode').val(rowData[2]);
         $('#fullName').val(rowData[3]);
         $('#processType').val(rowData[4]);
-        $('#amount').val(rowData[4]);
+        $('#amount').val(rowData[5]);
         var date = new Date(rowData[1]);
 
         // Lấy ngày, tháng và năm từ đối tượng Date
@@ -258,7 +336,7 @@
     const currentDate = () => {
     // Get today's date in YYYY-MM-DD format
     var today = new Date().toISOString().split('T')[0];
-    
+
     // Set the input field value to today's date
     document.getElementById("processDateAdd").value = today;
     }
@@ -270,13 +348,40 @@
             console.log(checkbox.value)
             selectedItems.push(checkbox.value);
         });
+        document.getElementById('selectedIds').value = JSON.stringify(selectedItems);
+        // Gửi form
+        document.getElementById('deleteForm').submit();
+
 
         // Make an AJAX request to the controller to delete selected items
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "/admin/violations/delete", true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.send(JSON.stringify(selectedItems));
-    }
+<!--        var xhr = new XMLHttpRequest();-->
+<!--        xhr.open("POST", "/admin/violations/delete", true);-->
+<!--        xhr.setRequestHeader("Content-Type", "application/json");-->
+<!--        xhr.send(JSON.stringify(selectedItems));-->
+<!--         $('#staticBackdrop').modal('hide');-->
+        }
+
+
+      var urlParams = new URLSearchParams(window.location.search);
+      var message = urlParams.get('message');
+      if (message && message.trim() !== '') {
+        $('#messageContent').text(message);
+         $('#messageModal').modal('show');
+      }
+    $('#checkDel').click(function(){
+        var selectedItems = [];
+        var checkboxes = document.querySelectorAll('input[name="selectedItems"]:checked');
+        checkboxes.forEach(function(checkbox) {
+            selectedItems.push(checkbox.value);
+        });
+        if(selectedItems.length === 0){
+            $('#checkDelete').modal('show');
+        }
+        else{
+            $('#staticBackdrop').modal('show');
+        }
+    });
+
 </script>
 </body>
 </html>
