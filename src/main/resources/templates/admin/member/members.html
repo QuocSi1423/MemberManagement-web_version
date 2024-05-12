@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <title>All Members</title>
+    
+</head>
+<body>
+    
+    <div class="container mt-3">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control col-8" id="searchBar" placeholder="Search by name">
+            <div class="input-group-append col-4">
+                <button class="btn btn-primary w-100" style="border-radius: 0px 8px 8px 0px !important;" type="button" id="searchButton">Search</button>
+            </div>
+        </div>
+        
+
+
+        <div class="text-right" style="text-align: right;">
+            <a href="single_member_adding_form" class="btn btn-primary">Thêm thành viên</a>
+            <a href="adding_members_from_file" class="btn btn-primary">Thêm từ file</a>
+            <a href="deleting_members_by_conditions_form" class="btn btn-dark">Xóa với bộ lọc</a>
+            <hr>
+        </div>
+    
+        <table class="table ">
+            <thead>
+            <tr class="table-primary row text-center  ">
+                <th class="col-1">MaTV</th>
+                <th class="col-2">Họ tên</th>
+                <th class="col-2">Email</th>
+                <th class="col-2">Sdt</th>
+                <th class="col-1">Ngành</th>
+                <th class="col-1">Khoa</th>
+                <th class="col-3">Hành động</th>
+            </tr>
+
+        </thead>
+            <tr th:each="member : ${members} " class="row">
+                <td th:text="${member.maTV}"  class="col-1"></td>
+                <td th:text="${member.hoTen}" class="col-2"></td>
+                <td th:text="${member.email}" class="col-2"></td>
+                <td th:text="${member.sdt}"  class="col-2 text-center"></td>
+                <td th:text="${member.nganh}" class="col-1"></td>
+                <td th:text="${member.khoa}"class="col-1"></td>
+                <td class="col-3 text-center">
+                    <a th:href="@{/admin/member/delete_member/{maTV}(maTV=${member.maTV})}" th:data-matv="${member.maTV}" onclick="return confirm('Bạn có muốn xóa thành viên này')"> <button class="btn btn-dark">Xóa thành viên</button></a>
+                    <!-- <a th:href="@{/admin/member/delete_member/{maTV}(maTV=${member.maTV})}" th:data-matv="${member.maTV}" onclick="return confirm('Bạn có muốn xóa thành viên này')"> <button>Xóa thành viên</button></a> -->
+                    <a th:href="@{/admin/member/update_member_form/{maTV}(maTV=${member.maTV})}" class="button"><button class="btn btn-primary">Sửa thông tin</button></a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script>
+        document.getElementById('searchButton').addEventListener('click', function() {
+            var name = document.getElementById('searchBar').value;
+            window.location.href = '/admin/member/get_members_by_name/' + name;
+        });
+    </script>
+</body>
+</html>
